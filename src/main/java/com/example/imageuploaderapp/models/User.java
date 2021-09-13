@@ -78,6 +78,26 @@ public class User extends Auditable
         this.primaryemail = primaryemail;
     }
 
+    /**
+     * Getter for userid
+     *
+     * @return the userid (long) of the user
+     */
+    public long getUserid()
+    {
+        return userid;
+    }
+
+    /**
+     * Setter for userid. Used primary for seeding data
+     *
+     * @param userid the new userid (long) of the user
+     */
+    public void setUserid(long userid)
+    {
+        this.userid = userid;
+    }
+
     public String getUsername()
     {
         return username;
@@ -112,6 +132,26 @@ public class User extends Auditable
         this.password = passwordEncoder.encode(password);
     }
 
+    public List<UserEmail> getUseremails()
+    {
+        return useremails;
+    }
+
+    public void setUseremails(List<UserEmail> useremails)
+    {
+        this.useremails = useremails;
+    }
+
+    public Set<UserRoles> getRoles()
+    {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRoles> roles)
+    {
+        this.roles = roles;
+    }
+
     /**
      * Internally, user security requires a list of authorities, roles, that the user has. This method is a simple way to provide those.
      * Note that SimpleGrantedAuthority requests the format ROLE_role name all in capital letters!
@@ -132,25 +172,5 @@ public class User extends Auditable
         }
 
         return rtnList;
-    }
-
-    public List<UserEmail> getUseremails()
-    {
-        return useremails;
-    }
-
-    public void setUseremails(List<UserEmail> useremails)
-    {
-        this.useremails = useremails;
-    }
-
-    public Set<UserRoles> getRoles()
-    {
-        return roles;
-    }
-
-    public void setRoles(Set<UserRoles> roles)
-    {
-        this.roles = roles;
     }
 }
