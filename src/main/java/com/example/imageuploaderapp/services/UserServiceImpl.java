@@ -145,10 +145,6 @@ public class UserServiceImpl
                 .add(new UserEmail(ue.getUseremail(), newUser));
         }
 
-        /**
-         * Todo Image Save
-         */
-
         return userrepos.save(newUser);
     }
 
@@ -210,7 +206,5 @@ public class UserServiceImpl
             // to recognize that this exception can be thrown
             throw new OAuth2AccessDeniedException();
         }
-
     }
-
 }
