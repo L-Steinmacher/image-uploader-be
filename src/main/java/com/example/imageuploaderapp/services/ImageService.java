@@ -26,7 +26,4 @@ public interface ImageService
      */
     ImageModel save (ImageModel image);
 
-    /**
-     * Update
-     */
 }
