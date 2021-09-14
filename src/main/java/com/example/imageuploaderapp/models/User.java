@@ -175,6 +175,16 @@ public class User extends Auditable
         this.primaryemail = primaryemail;
     }
 
+    public Set<ImageModel> getImages()
+    {
+        return images;
+    }
+
+    public void setImages(Set<ImageModel> images)
+    {
+        this.images = images;
+    }
+
     /**
      * Internally, user security requires a list of authorities, roles, that the user has. This method is a simple way to provide those.
      * Note that SimpleGrantedAuthority requests the format ROLE_role name all in capital letters!

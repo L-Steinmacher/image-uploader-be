@@ -8,35 +8,44 @@ import javax.persistence.*;
 @Table(name = "image_table")
 public class ImageModel
 {
-    public ImageModel(){
-        super();
-    }
-
-    public ImageModel(String name, String type, byte[] picByte) {
-        this.name = name;
-        this.type = type;
-        this.picByte = picByte;
-    }
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String type;
 
     //image bytes can have large lengths so we specify a value
     //which is more than the default length for picByte column
-    @Column(name = "picByte", length = 1000)
+    @Column(name = "picByte", length = 1000, nullable = false)
 
     @ManyToOne()
     @JoinColumn(name = "userid",
-    nullable = false)
+        nullable = false)
     @JsonIgnoreProperties(value = "image_table",
         allowSetters = true)
     private User user;
+
+    public ImageModel(){
+        super();
+    }
+
+    public ImageModel(
+        String name,
+        String type,
+        byte[] picByte,
+        User user)
+    {
+        this.name = name;
+        this.type = type;
+        this.picByte = picByte;
+        this.user = user;
+    }
+
+
 
     private byte[] picByte;
 
@@ -68,5 +77,15 @@ public class ImageModel
     public void setPicByte(byte[] picByte)
     {
         this.picByte = picByte;
+    }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
     }
 }
