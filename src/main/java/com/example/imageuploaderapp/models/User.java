@@ -66,6 +66,9 @@ public class User extends Auditable
         allowSetters = true)
     private Set<UserRoles> roles = new HashSet<>();
 
+    public User()
+    {
+    }
 
     public User(
         String username,
