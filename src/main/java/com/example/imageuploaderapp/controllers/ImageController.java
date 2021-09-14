@@ -2,6 +2,7 @@ package com.example.imageuploaderapp.controllers;
 
 import com.example.imageuploaderapp.models.ImageModel;
 import com.example.imageuploaderapp.repository.ImageRepository;
+import com.example.imageuploaderapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +17,25 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:2019")
 @RequestMapping(path = "image")
 public class ImageController
 {
     @Autowired
     private ImageRepository imageRepository;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/upload")
     public ResponseEntity.BodyBuilder uploadImage(@RequestParam("imageFile")
                                                   MultipartFile file) throws IOException
     {
         System.out.println("Original Image Byte Size - " + file.getBytes().length);
-        ImageModel img = new ImageModel(file.getOriginalFilename(), file.getContentType(),
-            compressBytes(file.getBytes()));
+        ImageModel img = new ImageModel(file.getOriginalFilename(),
+            file.getContentType(),
+            compressBytes(file.getBytes()),
+            ));
         imageRepository.save(img);
         return ResponseEntity.status(HttpStatus.OK);
     }
@@ -38,7 +44,8 @@ public class ImageController
     public ImageModel getImage(@PathVariable("imageName") String imageName) throws IOException {
         final Optional<ImageModel> retrievedImage = imageRepository.findByName(imageName);
         ImageModel img = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
-            decompressBytes(retrievedImage.get().getPicByte()));
+            decompressBytes(retrievedImage.get().getPicByte()),
+            retrievedImage.get().getUser());
         return img;
     }
 

@@ -1,5 +1,7 @@
 package com.example.imageuploaderapp.services;
 
+import com.example.imageuploaderapp.models.ValidationError;
+
 import java.util.List;
 
 /**
