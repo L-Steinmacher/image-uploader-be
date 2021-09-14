@@ -152,6 +152,16 @@ public class User extends Auditable
         this.roles = roles;
     }
 
+    public String getPrimaryemail()
+    {
+        return primaryemail;
+    }
+
+    public void setPrimaryemail(String primaryemail)
+    {
+        this.primaryemail = primaryemail;
+    }
+
     /**
      * Internally, user security requires a list of authorities, roles, that the user has. This method is a simple way to provide those.
      * Note that SimpleGrantedAuthority requests the format ROLE_role name all in capital letters!
