@@ -1,5 +1,7 @@
 package com.example.imageuploaderapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -28,6 +30,13 @@ public class ImageModel
     //image bytes can have large lengths so we specify a value
     //which is more than the default length for picByte column
     @Column(name = "picByte", length = 1000)
+
+    @ManyToOne()
+    @JoinColumn(name = "userid",
+    nullable = false)
+    @JsonIgnoreProperties(value = "image_table",
+        allowSetters = true)
+    private User user;
 
     private byte[] picByte;
 

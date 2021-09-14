@@ -66,6 +66,16 @@ public class User extends Auditable
         allowSetters = true)
     private Set<UserRoles> roles = new HashSet<>();
 
+    /**
+     * Part of the join relationship between user and ImageModel
+     */
+    @OneToMany(mappedBy = "user",
+        cascade =  CascadeType.ALL,
+        orphanRemoval = true)
+    @JsonIgnoreProperties(value = "user",
+        allowSetters = true)
+    private Set<ImageModel> images = new HashSet<>();
+
     public User()
     {
     }
