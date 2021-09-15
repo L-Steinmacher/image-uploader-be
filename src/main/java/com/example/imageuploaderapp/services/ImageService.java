@@ -14,7 +14,7 @@ public interface ImageService
     /**
      * Find image by id
      */
-    ImageModel findImageById(long id);
+    ImageModel findImageByName(String name);
 
     /**
      * deletes an image

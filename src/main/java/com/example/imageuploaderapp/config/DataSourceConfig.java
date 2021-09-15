@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
+/**
+ * Configures which database we are using based on a property in application.properties
+ */
 @Configuration
 public class DataSourceConfig
 {

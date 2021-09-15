@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service(value = "ImageService")
@@ -23,6 +24,10 @@ public class ImageServiceImpl implements ImageService
     @Autowired
     private HelperFunctions helperFunctions;
 
+    /**
+     * Gets and returns a list of Images to the user
+     * @return list
+     */
     @Override
     public List<ImageModel> findAllImages()
     {
@@ -34,10 +39,29 @@ public class ImageServiceImpl implements ImageService
         return list;
     }
 
+    /**
+     * Gets and returns a single image from the database to the user.
+     * @param name of the image
+     * @return a single image to the user
+     */
     @Override
-    public ImageModel findImageById(long id)
+    public ImageModel findImageByName(String name)
     {
-        return null;
+        if (imageRepository.findByName(name).isPresent())
+        {
+            final Optional<ImageModel> retrievedImage = imageRepository.findByName(name);
+            byte[] decompressByte = helperFunctions.decompressBytes(retrievedImage.get().getPicByte());
+            ImageModel decompressImage = new ImageModel(
+                retrievedImage.get().getName(),
+                retrievedImage.get().getType(),
+                decompressByte,
+                retrievedImage.get().getUser()
+            );
+            return decompressImage;
+        }else
+        {
+            throw new ResourceNotFoundException("Image with name " + name + " not found!");
+        }
     }
 
     /**
@@ -66,11 +90,11 @@ public class ImageServiceImpl implements ImageService
     @Override
     public ImageModel save(ImageModel image)
     {
-        byte[] newCompressed = helperFunctions.compressBytes(image.getPicByte());
+        byte[] newCompressedByte = helperFunctions.compressBytes(image.getPicByte());
         ImageModel newImage = new ImageModel();
 
         newImage.setName(image.getName());
-        newImage.setPicByte(newCompressed);
+        newImage.setPicByte(newCompressedByte);
         newImage.setType(image.getType());
         newImage.setUser(userService.findUserById(image.getUser().getUserid()));
 
