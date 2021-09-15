@@ -1,11 +1,13 @@
 package com.example.imageuploaderapp.services;
 
+import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.models.ImageModel;
 import com.example.imageuploaderapp.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -24,7 +26,12 @@ public class ImageServiceImpl implements ImageService
     @Override
     public List<ImageModel> findAllImages()
     {
-        return null;
+        List<ImageModel> list = new ArrayList<>();
+
+        imageRepository.findAll()
+            .iterator()
+            .forEachRemaining(list::add);
+        return list;
     }
 
     @Override
@@ -33,12 +40,29 @@ public class ImageServiceImpl implements ImageService
         return null;
     }
 
+    /**
+     * Deletes and removes an image object from the database.
+     * @param id The id of the image to be removed from the database.
+     */
     @Override
     public void delete(long id)
     {
-
+        if (imageRepository.findById(id).isPresent())
+        {
+            imageRepository.deleteById(id);
+        }else
+        {
+            throw new ResourceNotFoundException("Image id " + id + " not found!");
+        }
     }
 
+    /**
+     * Given complete image object, saves that image object in the database.
+     * If a primary key is provided, the record is completely replaced
+     * If no primary key is provided, one is automatically generated and the record is added to the database.
+     * @param image the user object to be saved
+     * @return the saved image pbject any auto generated fields
+     */
     @Override
     public ImageModel save(ImageModel image)
     {
