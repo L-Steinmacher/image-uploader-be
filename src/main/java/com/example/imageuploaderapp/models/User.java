@@ -74,7 +74,7 @@ public class User extends Auditable
         orphanRemoval = true)
     @JsonIgnoreProperties(value = "user",
         allowSetters = true)
-    private Set<ImageModel> images = new HashSet<>();
+    private Set<ImageModel> imagetables = new HashSet<>();
 
     public User()
     {
@@ -175,14 +175,14 @@ public class User extends Auditable
         this.primaryemail = primaryemail;
     }
 
-    public Set<ImageModel> getImages()
+    public Set<ImageModel> getImagetables()
     {
-        return images;
+        return imagetables;
     }
 
-    public void setImages(Set<ImageModel> images)
+    public void setImagetables(Set<ImageModel> images)
     {
-        this.images = images;
+        this.imagetables = images;
     }
 
     /**
