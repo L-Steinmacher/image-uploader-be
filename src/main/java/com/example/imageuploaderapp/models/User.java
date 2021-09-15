@@ -66,6 +66,19 @@ public class User extends Auditable
         allowSetters = true)
     private Set<UserRoles> roles = new HashSet<>();
 
+    /**
+     * Part of the join relationship between user and ImageModel
+     */
+    @OneToMany(mappedBy = "user",
+        cascade =  CascadeType.ALL,
+        orphanRemoval = true)
+    @JsonIgnoreProperties(value = "user",
+        allowSetters = true)
+    private Set<ImageModel> images = new HashSet<>();
+
+    public User()
+    {
+    }
 
     public User(
         String username,
@@ -160,6 +173,16 @@ public class User extends Auditable
     public void setPrimaryemail(String primaryemail)
     {
         this.primaryemail = primaryemail;
+    }
+
+    public Set<ImageModel> getImages()
+    {
+        return images;
+    }
+
+    public void setImages(Set<ImageModel> images)
+    {
+        this.images = images;
     }
 
     /**
