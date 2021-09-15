@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "image_table")
+@Table(name = "imagemodels")
 public class ImageModel
 {
 
@@ -21,16 +21,17 @@ public class ImageModel
     //image bytes can have large lengths so we specify a value
     //which is more than the default length for picByte column
     @Column(name = "picByte", length = 1000, nullable = false)
+    private byte[] picbyte;
 
     @ManyToOne()
     @JoinColumn(name = "userid",
         nullable = false)
-    @JsonIgnoreProperties(value = "image_table",
+    @JsonIgnoreProperties(value = "imagemodels",
         allowSetters = true)
     private User user;
 
     public ImageModel(){
-        super();
+//        super();
     }
 
     public ImageModel(
@@ -41,13 +42,9 @@ public class ImageModel
     {
         this.name = name;
         this.type = type;
-        this.picByte = picByte;
+        this.picbyte = picByte;
         this.user = user;
     }
-
-
-
-    private byte[] picByte;
 
     public String getName()
     {
@@ -71,12 +68,12 @@ public class ImageModel
 
     public byte[] getPicByte()
     {
-        return picByte;
+        return picbyte;
     }
 
     public void setPicByte(byte[] picByte)
     {
-        this.picByte = picByte;
+        this.picbyte = picByte;
     }
 
     public User getUser()
