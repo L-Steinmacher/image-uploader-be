@@ -1,23 +1,9 @@
 package com.example.imageuploaderapp.controllers;
 
-import com.example.imageuploaderapp.models.ImageModel;
-import com.example.imageuploaderapp.repository.ImageRepository;
 import com.example.imageuploaderapp.services.ImageService;
 import com.example.imageuploaderapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.function.ServerResponse;
-
-import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Optional;
-import java.util.zip.DataFormatException;
-import java.util.zip.Deflater;
-import java.util.zip.Inflater;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:2019")
@@ -30,16 +16,16 @@ public class ImageController
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/upload")
-    public ResponseEntity.BodyBuilder uploadImage(
-        @RequestParam("imageFile") MultipartFile file)
-        throws IOException
-    {
-        System.out.println("Original Image Byte Size - " + file.getBytes().length);
-        ImageModel newImg = new ImageModel();
-        imageService.save(newImg);
-        return ResponseEntity.status(HttpStatus.OK);
-    }
+//    @PostMapping(value = "/upload")
+//    public ResponseEntity.BodyBuilder uploadImage(
+//        @RequestParam("imageFile") MultipartFile file)
+//        throws IOException
+//    {
+//        System.out.println("Original Image Byte Size - " + file.getBytes().length);
+//        ImageModel newImg = new ImageModel();
+//        imageService.save(newImg);
+//        return ResponseEntity.status(HttpStatus.OK);
+//    }
 //    public BodyBuilder uplaodImage(@RequestParam("imageFile") MultipartFile file) throws IOException {
 //        System.out.println("Original Image Byte Size - " + file.getBytes().length);
 //        ImageModel img = new ImageModel(file.getOriginalFilename(), file.getContentType(),
@@ -48,14 +34,14 @@ public class ImageController
 //        return ResponseEntity.status(HttpStatus.OK);
 
 
-    @GetMapping(path = { "/{imageName}" })
-    public ImageModel getImage(
-        @PathVariable("imageName") String imageName)
-        throws IOException
-    {
-        ImageModel retrievedImage = imageService.findImageByName(imageName);
-        return retrievedImage;
-    }
+//    @GetMapping(path = { "/{imageName}" })
+//    public ImageModel getImage(
+//        @PathVariable("imageName") String imageName)
+//        throws IOException
+//    {
+//        ImageModel retrievedImage = imageService.findImageByName(imageName);
+//        return retrievedImage;
+//    }
 //        ImageModel img = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
 //            decompressBytes(retrievedImage.get().getPicByte()),
 //            retrievedImage.get().getUser());

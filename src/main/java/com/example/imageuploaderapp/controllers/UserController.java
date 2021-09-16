@@ -8,10 +8,12 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -31,6 +33,12 @@ public class UserController
      */
     @Autowired
     private UserService userService;
+
+    /**
+     * Using the ImageModel service to process image data
+     */
+    @Autowired
+    private ImageService imageService;
 
     /**
      * Using the Image service to process image data
@@ -181,7 +189,7 @@ public class UserController
      * @return A status of OK
      * @see UserService#update(User, long) UserService.update(User, long)
      */
-    @ PatchMapping(value = "/user/{id}",
+    @PatchMapping(value = "/user/{id}",
     consumes = "application/json")
     public ResponseEntity<?> updateUser(
         @RequestBody User updateUser,
@@ -223,6 +231,17 @@ public class UserController
         User u = userService.findByName(authentication.getName());
         return new ResponseEntity<>(u,
             HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/user/{id}/image/upload",
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> uploadImage(
+        @PathVariable("id") long id,
+        @RequestParam("file") MultipartFile file)
+    {
+        imageService.uploadImage(id, file);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }
