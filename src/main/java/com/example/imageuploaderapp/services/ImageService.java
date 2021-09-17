@@ -1,6 +1,7 @@
 package com.example.imageuploaderapp.services;
 
-import com.example.imageuploaderapp.models.ImageModel;
+import com.example.imageuploaderapp.models.Image;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -9,21 +10,23 @@ public interface ImageService
     /**
      * returns all images
      */
-    List<ImageModel> findAllImages();
+    List<Image> findAllImages();
 
     /**
-     * Find image by id
+     * Find image by name
      */
-    ImageModel findImageByName(String name);
+    Image findImageById(Long id);
 
     /**
-     * deletes an image
+     * deletes an image by it's id
      */
     void delete(long id);
 
     /**
-     * Saves a new image to
+     * Saves a new image to the S3 database
      */
-    ImageModel save (ImageModel image);
+    Image uploadImage (long id, MultipartFile file);
+
+    public byte[] downloadImage(Long userid, Long imageid);
 
 }
