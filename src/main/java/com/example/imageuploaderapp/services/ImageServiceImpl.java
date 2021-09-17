@@ -6,6 +6,7 @@ import com.example.imageuploaderapp.filestore.FileStore;
 import com.example.imageuploaderapp.models.Image;
 import com.example.imageuploaderapp.models.User;
 import com.example.imageuploaderapp.repository.ImageRepository;
+import com.example.imageuploaderapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ public class ImageServiceImpl implements ImageService
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private HelperFunctions helperFunctions;
@@ -148,5 +152,18 @@ public class ImageServiceImpl implements ImageService
         }
     }
 
+    @Transactional
+    @Override
+    public byte[] downloadImage(Long userid, Long imageid)
+    {
+        User user = userRepository.findById(userid)
+            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
+        Image image = findImageById(imageid);
+        String path = String.format("%s/%s",
+            BucketName.PROFILE_IMAGE.getBucketName(),
+            user.getUserid());
+        String key = image.getLink();
+        return fileStore.download(path,key);
+    }
 
 }

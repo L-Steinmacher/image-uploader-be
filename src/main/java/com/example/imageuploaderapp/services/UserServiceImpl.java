@@ -212,19 +212,4 @@ public class UserServiceImpl
             throw new OAuth2AccessDeniedException();
         }
     }
-
-    @Transactional
-    @Override
-    public byte[] downloadImage(Long userid, Long imageid)
-    {
-//        User user = userrepos.findById(userid)
-//            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
-//        Image image = imageService.findImageById(imageid);
-//        String path = String.format("%s/%s",
-//            BucketName.PROFILE_IMAGE.getBucketName(),
-//            user.getUserid());
-//        return image.getLink();
-//
-    return null;
-    }
 }

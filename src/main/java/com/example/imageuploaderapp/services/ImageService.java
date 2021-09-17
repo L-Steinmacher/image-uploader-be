@@ -27,4 +27,6 @@ public interface ImageService
      */
     Image uploadImage (long id, MultipartFile file);
 
+    public byte[] downloadImage(Long userid, Long imageid);
+
 }
