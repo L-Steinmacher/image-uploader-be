@@ -165,7 +165,7 @@ public class UserController
      * @return status of OK
      * @see UserService#save(User) UserService.save(User)
      */
-    @PutMapping(value = "/user/{userid",
+    @PutMapping(value = "/user/{userid}",
     consumes = "application/json")
     public ResponseEntity<?> updateFullUser(
         @Valid
@@ -244,11 +244,11 @@ public class UserController
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-//    @GetMapping(value = "/user/{userid}/image/{imageid}/download")
-//    public byte[] downloadImage(@PathVariable("userid", "imageid") Long userid, Long imageid)
-//    {
-//
-//        return userService.downloadImage(userid, imageid);
-//    }
+    @GetMapping(value = "/user/{userid}/image/{imageid}/download")
+    public byte[] downloadImage(@PathVariable("userid") Long userid,
+                                @PathVariable("imageid") Long imageid)
+    {
+        return imageService.downloadImage(userid, imageid);
+    }
 
 }
