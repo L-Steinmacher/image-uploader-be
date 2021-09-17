@@ -1,12 +1,13 @@
 package com.example.imageuploaderapp.repository;
 
-import com.example.imageuploaderapp.models.ImageModel;
+import com.example.imageuploaderapp.models.Image;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface ImageRepository extends JpaRepository<ImageModel, Long>
+public interface ImageRepository extends JpaRepository<Image, Long>
 {
-    Optional<ImageModel> findByName(String name);
+
 }
