@@ -244,4 +244,11 @@ public class UserController
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+//    @GetMapping(value = "/user/{userid}/image/{imageid}/download")
+//    public byte[] downloadImage(@PathVariable("userid", "imageid") Long userid, Long imageid)
+//    {
+//
+//        return userService.downloadImage(userid, imageid);
+//    }
+
 }

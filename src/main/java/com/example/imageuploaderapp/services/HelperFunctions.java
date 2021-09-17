@@ -27,8 +27,4 @@ public interface HelperFunctions
      */
     boolean isAuthorizedToMakeChange(String username);
 
-    byte[] compressBytes(byte[] data);
-
-    // uncompress the image bytes before returning it to the angular application
-    byte[] decompressBytes(byte[] data);
 }

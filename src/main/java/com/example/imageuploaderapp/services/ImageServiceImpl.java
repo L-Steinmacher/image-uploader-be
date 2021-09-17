@@ -53,29 +53,15 @@ public class ImageServiceImpl implements ImageService
     }
 
     /**
-     * Gets and returns a single image from the database to the user.
-     * @param name of the image
-     * @return a single image to the user
+     * Finds an image by it's id from the database
+     * @param id The id of the image to be retrieved
+     * @return the image from the database
      */
     @Override
-    public Image findImageByName(String name)
+    public Image findImageById(Long id)
     {
-//        if (imageRepository.findByName(name).isPresent())
-//        {
-//            final Optional<ImageModel> retrievedImage = imageRepository.findByName(name);
-//            byte[] decompressByte = helperFunctions.decompressBytes(retrievedImage.get().getPicByte());
-//            ImageModel decompressImage = new ImageModel(
-//                retrievedImage.get().getName(),
-//                retrievedImage.get().getType(),
-//                decompressByte,
-//                retrievedImage.get().getUser()
-//            );
-//            return decompressImage;
-//        }else
-//        {
-//            throw new ResourceNotFoundException("Image with name " + name + " not found!");
-//        }
-        return null;
+        return imageRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Image with id " + id + " not found!"));
     }
 
     /**

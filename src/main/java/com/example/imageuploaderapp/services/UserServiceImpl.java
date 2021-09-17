@@ -1,10 +1,9 @@
 package com.example.imageuploaderapp.services;
 
+import com.example.imageuploaderapp.bucket.BucketName;
 import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
-import com.example.imageuploaderapp.models.Role;
-import com.example.imageuploaderapp.models.User;
-import com.example.imageuploaderapp.models.UserEmail;
-import com.example.imageuploaderapp.models.UserRoles;
+import com.example.imageuploaderapp.filestore.FileStore;
+import com.example.imageuploaderapp.models.*;
 import com.example.imageuploaderapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedException;
@@ -36,11 +35,17 @@ public class UserServiceImpl
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private ImageService imageService;
+
     /**
      * Connects this service to the HelperFunctions
      */
     @Autowired
     private HelperFunctions helperFunctions;
+
+    @Autowired
+    private FileStore fileStore;
 
     public User findUserById(long id) throws ResourceNotFoundException
     {
@@ -206,5 +211,20 @@ public class UserServiceImpl
             // to recognize that this exception can be thrown
             throw new OAuth2AccessDeniedException();
         }
+    }
+
+    @Transactional
+    @Override
+    public byte[] downloadImage(Long userid, Long imageid)
+    {
+//        User user = userrepos.findById(userid)
+//            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
+//        Image image = imageService.findImageById(imageid);
+//        String path = String.format("%s/%s",
+//            BucketName.PROFILE_IMAGE.getBucketName(),
+//            user.getUserid());
+//        return image.getLink();
+//
+    return null;
     }
 }
