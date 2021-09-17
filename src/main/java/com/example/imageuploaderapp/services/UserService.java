@@ -80,6 +80,4 @@ public interface UserService
      */
     public void deleteAll();
 
-    public byte[] downloadImage(Long userid, Long imageid);
-
 }

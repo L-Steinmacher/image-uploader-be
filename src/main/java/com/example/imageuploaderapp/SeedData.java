@@ -62,9 +62,9 @@ public class SeedData implements CommandLineRunner
                 r3));
 
         // data, user
-        User u3 = new User("Cel",
+        User u3 = new User("Sassy",
             "iLoveIndy",
-            "indy_dog2cool@fake.com");
+            "dogzilla@fake.com");
 
         u3.getRoles()
             .add(new UserRoles(u3,
