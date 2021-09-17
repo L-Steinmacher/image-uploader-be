@@ -2,9 +2,11 @@ package com.example.imageuploaderapp.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SwaggerWebMCV
+    implements WebMvcConfigurer
 {
     /**
      * Adds the Swagger web pages to Spring.
@@ -17,13 +19,13 @@ public class SwaggerWebMCV
      *
      * @param registry the place that holds the web pages for Spring
      */
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry)
-//    {
-//        registry.addResourceHandler("swagger-ui.html")
-//            .addResourceLocations("classpath:/META-INF/resources/");
-//
-//        registry.addResourceHandler("/webjars/**")
-//            .addResourceLocations("classpath:/META-INF/resources/webjars/");
-//    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry)
+    {
+        registry.addResourceHandler("swagger-ui.html")
+            .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/webjars/**")
+            .addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
 }
