@@ -17,10 +17,6 @@ public class Image
     private String name;
     @Column(name = "path", nullable = false)
     private String link;
-    @Column(name = "type", nullable = false)
-    private String type;
-    @Column(name = "length", nullable = false)
-    private String length;
 
     @ManyToOne()
     @JoinColumn(name = "userid",

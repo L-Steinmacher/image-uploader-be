@@ -1,5 +1,8 @@
 package com.example.imageuploaderapp.services;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.example.imageuploaderapp.bucket.BucketName;
 import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.filestore.FileStore;
@@ -7,8 +10,11 @@ import com.example.imageuploaderapp.models.Image;
 import com.example.imageuploaderapp.models.User;
 import com.example.imageuploaderapp.repository.ImageRepository;
 import com.example.imageuploaderapp.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +39,9 @@ public class ImageServiceImpl implements ImageService
 
     @Autowired
     private HelperFunctions helperFunctions;
+
+    @Autowired
+    AmazonS3 amazonS3;
 
     private final FileStore fileStore;
 
@@ -153,6 +162,19 @@ public class ImageServiceImpl implements ImageService
     }
 
     @Transactional
+    public void deleteImage(Long id)
+    {
+        if (imageRepository.findById(id).isPresent())
+        {
+            deleteFile(imageRepository.findById(id).get().getLink());
+            imageRepository.deleteById(id);
+        }else
+        {
+            throw new ResourceNotFoundException("Image with id: " + id + " not found!");
+        }
+    }
+
+    @Transactional
     @Override
     public byte[] downloadImage(Long userid, Long imageid)
     {
@@ -164,6 +186,12 @@ public class ImageServiceImpl implements ImageService
             user.getUserid());
         String key = image.getLink();
         return fileStore.download(path,key);
+    }
+    @Async
+    public void deleteFile(final String keyName) {
+        String bucketName = BucketName.PROFILE_IMAGE.getBucketName();
+        final DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, keyName);
+        amazonS3.deleteObject(deleteObjectRequest);
     }
 
 }
