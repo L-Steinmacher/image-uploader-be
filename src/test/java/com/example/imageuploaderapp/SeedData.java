@@ -76,7 +76,7 @@ public class SeedData
 
         // Admin Test User
         User u1 = new User("Admin Test", "passwordTest", "admin@test.com");
-        u1.setUserid(10);
+        u1.setId(10);
         u1.getRoles().add(new UserRoles(u1, r1));
         u1.getRoles().add(new UserRoles(u1,r2));
         u1.getRoles().add(new UserRoles(u1,r3));
@@ -90,7 +90,7 @@ public class SeedData
         userService.save(u1);
 
         User u2 = new User("Data Test", "dataPasswordTest", "data@test.com");
-        u2.setUserid(20);
+        u2.setId(20);
         u2.getRoles().add(new UserRoles(u2, r2));
         u2.getRoles().add(new UserRoles(u2, r3));
 
@@ -100,7 +100,7 @@ public class SeedData
         userService.save(u2);
 
         User u3 = new User("User Test", "UserPasswordTest", "user@test.com");
-        u3.setUserid(30);
+        u3.setId(30);
         u3.getRoles().add(new UserRoles(u3, r3));
 
         u3.getUseremails().add(new UserEmail("user@test.com", u3));

@@ -24,7 +24,7 @@ public class User extends Auditable
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long userid;
+    private long id;
 
     /**
      * The username (String). Cannot be null and must be unique
@@ -96,9 +96,9 @@ public class User extends Auditable
      *
      * @return the userid (long) of the user
      */
-    public long getUserid()
+    public long getId()
     {
-        return userid;
+        return id;
     }
 
     /**
@@ -106,9 +106,9 @@ public class User extends Auditable
      *
      * @param userid the new userid (long) of the user
      */
-    public void setUserid(long userid)
+    public void setId(long userid)
     {
-        this.userid = userid;
+        this.id = userid;
     }
 
     public String getUsername()
@@ -118,7 +118,7 @@ public class User extends Auditable
 
     public void setUsername(String username)
     {
-        this.username = username;
+        this.username = username.toLowerCase();
     }
 
     public String getPassword()
