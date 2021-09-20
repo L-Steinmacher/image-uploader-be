@@ -1,7 +1,6 @@
 package com.example.imageuploaderapp.services;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.example.imageuploaderapp.bucket.BucketName;
 import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
@@ -10,10 +9,7 @@ import com.example.imageuploaderapp.models.Image;
 import com.example.imageuploaderapp.models.User;
 import com.example.imageuploaderapp.repository.ImageRepository;
 import com.example.imageuploaderapp.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -183,7 +179,7 @@ public class ImageServiceImpl implements ImageService
         Image image = findImageById(imageid);
         String path = String.format("%s/%s",
             BucketName.PROFILE_IMAGE.getBucketName(),
-            user.getUserid());
+            user.getId());
         String key = image.getLink();
         return fileStore.download(path,key);
     }
