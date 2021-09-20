@@ -47,12 +47,23 @@ public class UserServiceImpl
     @Autowired
     private FileStore fileStore;
 
+    /**
+     * Takes in a user ID and returns the user object from the database
+     * @param id The primary key (long) of the user you seek.
+     * @return the user with matching ID
+     * @throws ResourceNotFoundException
+     */
     public User findUserById(long id) throws ResourceNotFoundException
     {
         return userrepos.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User id " + id + " not found!"));
     }
 
+    /**
+     * Takes in a user name and returns the usr object from the database
+     * @param username The substring (String) of the username of the Users you seek
+     * @return
+     */
     @Override
     public List<User> findByNameContaining(String username)
     {
