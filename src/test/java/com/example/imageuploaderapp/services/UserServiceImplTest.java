@@ -8,10 +8,8 @@ import com.example.imageuploaderapp.models.UserRoles;
 import com.example.imageuploaderapp.repository.UserRepository;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,26 +26,20 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ImageUploaderAppApplicationTesting.class,
     properties = {"command.line.runner.enabled=false"})
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserServiceImplTest
 {
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
-    private RoleService roleService;
-
-    @MockBean
-    private HelperFunctions helperFunctions;
+    UserRepository userRepository;
 
     private List<User> userList = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception
     {
+        System.out.println("Start Setup !!!!");
         userList = new ArrayList<>();
 
         Role r1 = new Role("Admin");
@@ -59,8 +51,8 @@ public class UserServiceImplTest
         r3.setRoleid(3);
 
         // Admin Test User
-        User u1 = new User("Admin Test", "password", "admin@test.com");
-        u1.setUserid(10);
+        User u1 = new User("admin test", "password", "admin@test.com");
+        u1.setId(10);
         u1.getRoles().add(new UserRoles(u1, r1));
         u1.getRoles().add(new UserRoles(u1,r2));
         u1.getRoles().add(new UserRoles(u1,r3));
@@ -73,8 +65,8 @@ public class UserServiceImplTest
 
         userList.add(u1);
 
-        User u2 = new User("Data Test", "dataPassword", "data@test.com");
-        u2.setUserid(20);
+        User u2 = new User("Data test", "dataPassword", "data@test.com");
+        u2.setId(20);
         u2.getRoles().add(new UserRoles(u2, r2));
         u2.getRoles().add(new UserRoles(u2, r3));
 
@@ -84,7 +76,7 @@ public class UserServiceImplTest
         userList.add(u2);
 
         User u3 = new User("User Test", "UserPassword", "user@test.com");
-        u3.setUserid(30);
+        u3.setId(30);
         u3.getRoles().add(new UserRoles(u3, r3));
 
         u3.getUseremails().add(new UserEmail("user@test.com", u3));
@@ -93,6 +85,7 @@ public class UserServiceImplTest
         userList.add(u3);
 
         MockitoAnnotations.initMocks(this);
+        System.out.println("Setup ------>      user list: " + userList);
     }
 
     @After
@@ -100,49 +93,48 @@ public class UserServiceImplTest
     {}
 
     @Test
-    void a_findUserById()
+    public void a_findUserById()
     {
         System.out.println("------>      user list: " + userList);
         Mockito.when(userRepository.findById(20L))
             .thenReturn(Optional.of(userList.get(1)));
 
-        assertEquals("Data Test".toLowerCase(),
-            userService.findUserById(20).getUsername());
+                assertEquals("Data Test".toLowerCase(),
+                    userService.findUserById(20).getUsername());
     }
 
     @Test
-    void b_findByNameContaining()
-    {
-    }
-
-
-    @Test
-    void c_findAll()
+    public void findByNameContaining()
     {
     }
 
     @Test
-    void d_delete()
+    public void findAll()
     {
     }
 
     @Test
-    void e_findByName()
+    public void delete()
     {
     }
 
     @Test
-    void f_deleteAll()
+    public void findByName()
     {
     }
 
     @Test
-    void g_save()
+    public void deleteAll()
     {
     }
 
     @Test
-    void h_update()
+    public void save()
+    {
+    }
+
+    @Test
+    public void update()
     {
     }
 }

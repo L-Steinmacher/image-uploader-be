@@ -1,6 +1,5 @@
 package com.example.imageuploaderapp.services;
 
-import com.example.imageuploaderapp.bucket.BucketName;
 import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.filestore.FileStore;
 import com.example.imageuploaderapp.models.*;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Implements UserService Interface
@@ -131,11 +129,11 @@ public class UserServiceImpl
     {
         User newUser = new User();
 
-        if (user.getUserid() != 0)
+        if (user.getId() != 0)
         {
-            userrepos.findById(user.getUserid())
-                .orElseThrow(() -> new ResourceNotFoundException("User id " + user.getUserid() + " not found!"));
-            newUser.setUserid(user.getUserid());
+            userrepos.findById(user.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User id " + user.getId() + " not found!"));
+            newUser.setId(user.getId());
         }
 
         newUser.setUsername(user.getUsername()
