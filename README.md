@@ -8,8 +8,17 @@ This is a database Scheme with user and images.  This Java REST API application 
  Using the provided seed data, as successful application will return data based on the given endpoint.
  
  # Eniroment Variables must be set up to authenticate!
+     For OAUTH
      OAUTHCLIENTID
      OAUTHCLIENTSECRET
+     
+     For AWS S3 bucket you must have an AWS account of your own and creat an S3 bucket then generate your own keys.
+     accesskeyid
+     accesskeysecret
+     
+     
+     
+     
      
 # Make sure you have the right configuration file in your home directory.
   touch .zprofile
