@@ -13,8 +13,8 @@ This is a database Scheme with user and images.  This Java REST API application 
      OAUTHCLIENTSECRET
      
      For AWS S3 bucket you must have an AWS account of your own and creat an S3 bucket then generate your own keys.
-     accesskeyid
-     accesskeysecret
+     ACCESSKEYID
+     ACCESSKEYSECRET
      
      
      
