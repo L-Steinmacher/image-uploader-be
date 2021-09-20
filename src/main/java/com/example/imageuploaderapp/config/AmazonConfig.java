@@ -11,11 +11,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AmazonConfig
 {
+    static final String AWS_ACCESS_KEY = System.getenv("AWSACCESSKEY");
+    static final String AWS_SECRET_KEY = System.getenv("AWSSECRETKEY");
     @Bean
     public AmazonS3 s3()
     {
         AWSCredentials awsCredentials = new BasicAWSCredentials(
-
+            AWS_ACCESS_KEY,
+            AWS_SECRET_KEY
         );
         return AmazonS3ClientBuilder
             .standard()
