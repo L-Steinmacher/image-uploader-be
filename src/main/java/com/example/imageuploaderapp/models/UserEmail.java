@@ -30,12 +30,12 @@ public class UserEmail
         this.user = user;
     }
 
-    public long getUseremainid()
+    public long getUserEmail()
     {
         return useremailid;
     }
 
-    public void setUseremainid(long useremainid)
+    public void setUseremailid(long useremainid)
     {
         this.useremailid = useremainid;
     }
