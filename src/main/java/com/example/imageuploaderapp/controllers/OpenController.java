@@ -86,6 +86,8 @@ public class OpenController
             .toUri();
         responseHeaders.setLocation(newUserURI);
 
+        long userid = newuser.getId();
+
         // return the access token
         // To get the access token, surf to the endpoint /login just as if a client had done this.
         RestTemplate restTemplate = new RestTemplate();
@@ -107,6 +109,8 @@ public class OpenController
             "read write trust");
         map.add("username",
             newminuser.getUsername());
+        map.add("userid",
+            Long.toString(userid));
         map.add("password",
             newminuser.getPassword());
 
@@ -115,7 +119,8 @@ public class OpenController
 
         String theToken = restTemplate.postForObject(requestURI,
             request,
-            String.class);
+            String.class
+            );
 
         return new ResponseEntity<>(theToken,
             responseHeaders,
