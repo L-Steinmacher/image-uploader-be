@@ -30,6 +30,8 @@ This is a database Scheme with user and images.  This Java REST API application 
 ### This opens the .zprofile file in your default text editor. Go to the bottom of the file and add the following lines.
   export OAUTHCLIENTID=client-name  {replace client-name}
   export OAUTHCLIENTSECRET=client-secret {replace client-secret}
+  export ACCESSKEYID=AWS-client-id  {replace AWS-client-id for S3 bucket}
+  export ACCESSKEYSECRET=AWS-client-secret  {replace AWS-client-secret from S3 bucket}
   
   #### Save the .zprofile file
   #### RESTART YOUR COMPUTER.
