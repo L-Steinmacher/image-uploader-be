@@ -1,6 +1,7 @@
 package com.example.imageuploaderapp.services;
 
 import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
+import com.example.imageuploaderapp.models.User;
 import com.example.imageuploaderapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,7 +38,7 @@ public class SecurityUserServiceImpl
         throws
         ResourceNotFoundException
     {
-        com.example.imageuploaderapp.models.User user = userrepos.findByUsername(s.toLowerCase());
+        User user = userrepos.findByUsername(s.toLowerCase());
         if (user == null)
         {
             throw new ResourceNotFoundException("Invalid username or password.");
