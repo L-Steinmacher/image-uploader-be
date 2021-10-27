@@ -8,6 +8,9 @@ This is a database Scheme with user and images.  This Java REST API application 
  Using the provided seed data, as successful application will return data based on the given endpoint.
  
  ## Eniroment Variables must be set up to authenticate!
+ 
+ All Four variables must be set up for use of this app and testing
+ 
      For OAUTH
      OAUTHCLIENTID
      OAUTHCLIENTSECRET
