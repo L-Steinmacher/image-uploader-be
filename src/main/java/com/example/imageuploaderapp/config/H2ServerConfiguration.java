@@ -8,11 +8,15 @@ import org.springframework.context.annotation.Configuration;
 
 import java.sql.SQLException;
 
+/**
+ * Configures H2 access through the JetBrains IntelliJ IDEA IDE.
+ * <p>
+ * Adapted from https://techdev.io/en/developer-blog/querying-the-embedded-h2-database-of-a-spring-boot-application
+ * necessary for using the database tool built into intellij
+ */
 @Configuration
 public class H2ServerConfiguration
 {
-
-
     /**
      * TCP port for remote connections, default 9092.
      */
