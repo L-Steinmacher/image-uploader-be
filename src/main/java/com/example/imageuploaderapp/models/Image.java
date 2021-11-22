@@ -18,12 +18,17 @@ public class Image
     @Column(name = "path", nullable = false)
     private String link;
 
+
     @ManyToOne()
     @JoinColumn(name = "userid",
         nullable = false)
     @JsonIgnoreProperties(value = "images",
         allowSetters = true)
     private User user;
+
+    /**
+     * Todo  many to one image to hike
+     */
 
     public Image(){}
 
