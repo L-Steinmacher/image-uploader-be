@@ -129,6 +129,7 @@ public class UserController
      * @throws URISyntaxException Exception if something does not work in creating the location header
      * @see UserService#save(User) UserService.save(User)
      */
+    @ApiOperation("Creates a new user in the USER table.")
     @PostMapping(value = "/user",
     consumes = "application/json")
     public ResponseEntity<?> addNewUser(
