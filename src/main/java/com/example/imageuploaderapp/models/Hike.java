@@ -15,6 +15,8 @@ public class Hike
     private String hikename;
     @Column(name = "discription")
     private String discription;
+    @Column(name = "distance")
+    private long distance;
     @Column(name = "rating")
     private Long rating;
     /**
@@ -23,6 +25,7 @@ public class Hike
      * many to one user
     */
 
-
-
+    public Hike()
+    {
+    }
 }
