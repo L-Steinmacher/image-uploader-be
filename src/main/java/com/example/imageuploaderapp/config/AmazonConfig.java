@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AmazonConfig
 {
+    static String id = "AKIASHINJTR7QQYK5LEQ";
+    static String key = "fDpC8ki9BxQ86KrWeK0H3gwxTU+mwFAWmE1HIB7x";
     static final String AWS_ACCESS_KEY = System.getenv("ACCESSKEYID");
     static final String AWS_SECRET_KEY = System.getenv("ACCESSKEYSECRET");
 
@@ -18,8 +20,8 @@ public class AmazonConfig
     public AmazonS3 s3()
     {
         AWSCredentials awsCredentials = new BasicAWSCredentials(
-            AWS_ACCESS_KEY,
-            AWS_SECRET_KEY
+            id,
+            key
         );
         return AmazonS3ClientBuilder
             .standard()

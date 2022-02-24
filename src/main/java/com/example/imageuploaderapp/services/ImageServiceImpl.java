@@ -128,7 +128,7 @@ public class ImageServiceImpl implements ImageService
         {
             throw  new IllegalStateException(e);
         }
-        return newImage;
+        return imageRepository.save(newImage);
     }
 
     private Map<String, String> extractMetadata(MultipartFile file) {

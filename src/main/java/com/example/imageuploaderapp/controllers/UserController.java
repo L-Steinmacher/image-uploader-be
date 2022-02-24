@@ -40,11 +40,7 @@ public class UserController
     @Autowired
     private ImageService imageService;
 
-    /**
-     * Using the Image service to process image data
-     */
-//    @Autowired
-//    private ImageService imageService;
+
 
     /**
      * Returns a list of all users
