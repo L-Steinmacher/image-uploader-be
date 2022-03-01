@@ -46,7 +46,8 @@ public class SeedData implements CommandLineRunner
         // admin, data, user
         User u1 = new User("admin",
             "password",
-            "admin@fake.com");
+            "admin@fake.com",
+            "");
         u1.getRoles()
             .add(new UserRoles(u1,
                 r1));
@@ -58,9 +59,10 @@ public class SeedData implements CommandLineRunner
                 r3));
 
         // data, user
-        User u2 = new User("Indy",
-            "Dog",
-            "indy_dog@fake.com");
+        User u2 = new User("indy",
+            "dog",
+            "indy_dog@fake.com",
+            "");
         u2.getRoles()
             .add(new UserRoles(u2,
                 r2));
@@ -69,17 +71,19 @@ public class SeedData implements CommandLineRunner
                 r3));
 
         // data, user
-        User u3 = new User("Sassy",
-            "iLoveIndy",
-            "dogzilla@fake.com");
+        User u3 = new User("sassy",
+            "password",
+            "dogzilla@fake.com",
+            "");
 
         u3.getRoles()
             .add(new UserRoles(u3,
                 r3));
 
-        User u4 = new User("George",
-            "ftCat",
-            "blahcat@fake.com");
+        User u4 = new User("george",
+            "password",
+            "blahcat@fake.com",
+            "");
         u4.getRoles()
             .add(new UserRoles(u4,
                 r2));

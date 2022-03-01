@@ -75,7 +75,7 @@ public class SeedData
         r3 = roleService.save(r3);
 
         // Admin Test User
-        User u1 = new User("Admin Test", "passwordTest", "admin@test.com");
+        User u1 = new User("Admin Test", "passwordTest", "admin@test.com", "");
         u1.setId(10);
         u1.getRoles().add(new UserRoles(u1, r1));
         u1.getRoles().add(new UserRoles(u1,r2));
@@ -89,7 +89,7 @@ public class SeedData
 
         userService.save(u1);
 
-        User u2 = new User("Data Test", "dataPasswordTest", "data@test.com");
+        User u2 = new User("Data Test", "dataPasswordTest", "data@test.com", "");
         u2.setId(20);
         u2.getRoles().add(new UserRoles(u2, r2));
         u2.getRoles().add(new UserRoles(u2, r3));
@@ -99,7 +99,7 @@ public class SeedData
 
         userService.save(u2);
 
-        User u3 = new User("User Test", "UserPasswordTest", "user@test.com");
+        User u3 = new User("User Test", "UserPasswordTest", "user@test.com", "");
         u3.setId(30);
         u3.getRoles().add(new UserRoles(u3, r3));
 
@@ -127,7 +127,8 @@ public class SeedData
                     .username(),
                     "password",
                     nameFaker.internet()
-                        .emailAddress());
+                        .emailAddress(),
+                    "");
                 fakeUser.getRoles()
                     .add(new UserRoles(fakeUser,
                         r3));

@@ -1,5 +1,6 @@
 package com.example.imageuploaderapp.services;
 
+import com.example.imageuploaderapp.bucket.BucketName;
 import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.filestore.FileStore;
 import com.example.imageuploaderapp.models.*;
@@ -9,9 +10,12 @@ import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedExc
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
+
+import static org.apache.http.entity.ContentType.*;
 
 /**
  * Implements UserService Interface
@@ -221,4 +225,5 @@ public class UserServiceImpl
             throw new OAuth2AccessDeniedException();
         }
     }
+
 }

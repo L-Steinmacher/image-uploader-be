@@ -76,6 +76,9 @@ public class User extends Auditable
         allowSetters = true)
     private Set<Image> imagetables = new HashSet<>();
 
+    @Column(nullable = true)
+    private String userProfileImageLink;
+
     public User()
     {
     }
@@ -83,12 +86,14 @@ public class User extends Auditable
     public User(
         String username,
         String password,
-        String primaryemail
+        String primaryemail,
+        String userProfileImageLink
     )
     {
         setUsername(username);
         setPassword(password);
         this.primaryemail = primaryemail;
+        this.userProfileImageLink = userProfileImageLink;
     }
 
     /**
@@ -99,6 +104,16 @@ public class User extends Auditable
     public long getId()
     {
         return id;
+    }
+
+    public String getUserProfileImageLink()
+    {
+        return userProfileImageLink;
+    }
+
+    public void setUserProfileImageLink(String userProfileImageLink)
+    {
+        this.userProfileImageLink = userProfileImageLink;
     }
 
     /**

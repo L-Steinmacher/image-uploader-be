@@ -1,6 +1,7 @@
 package com.example.imageuploaderapp.services;
 
 import com.example.imageuploaderapp.models.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -79,5 +80,7 @@ public interface UserService
      * Deletes all record and their associated records from the database
      */
     public void deleteAll();
+
+
 
 }

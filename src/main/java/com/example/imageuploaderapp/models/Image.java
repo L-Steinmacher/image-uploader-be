@@ -3,6 +3,7 @@ package com.example.imageuploaderapp.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "images")
@@ -62,9 +63,9 @@ public class Image
         return link;
     }
 
-    public void setLink(String path)
+    public void setLink(String link)
     {
-        this.link = path;
+        this.link = link;
     }
 
     public User getUser()
@@ -77,5 +78,27 @@ public class Image
         this.user = user;
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
+        Image image = (Image) o;
+        return getId().equals(image.getId()) && getName().equals(image.getName()) && getLink().equals(image.getLink()) && getUser().equals(image.getUser());
+    }
 
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getId(),
+            getName(),
+            getLink(),
+            getUser());
+    }
 }

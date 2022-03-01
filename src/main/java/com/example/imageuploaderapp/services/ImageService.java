@@ -29,4 +29,6 @@ public interface ImageService
 
     public byte[] downloadImage(Long userid, Long imageid);
 
+    public List<Image> findCurrentUserImages(Long userid);
+
 }

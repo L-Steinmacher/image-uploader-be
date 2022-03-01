@@ -1,6 +1,7 @@
 package com.example.imageuploaderapp.controllers;
 
 
+import com.example.imageuploaderapp.models.Image;
 import com.example.imageuploaderapp.models.User;
 import com.example.imageuploaderapp.services.ImageService;
 import com.example.imageuploaderapp.services.UserService;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -245,6 +247,23 @@ public class UserController
                                 @PathVariable("imageid") Long imageid)
     {
         return imageService.downloadImage(userid, imageid);
+    }
+
+    @GetMapping(value = "/user/{userid}/images/")
+    public ResponseEntity<?> getImages(@PathVariable("userid") Long userid)
+    {
+        List<Image> myImages = imageService.findCurrentUserImages(userid);
+        return new ResponseEntity<>(myImages,
+            HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/images/")
+    public ResponseEntity<?> getAllImages()
+    {
+        List<Image> myImages = imageService.findAllImages();
+        return new ResponseEntity<>(myImages,
+            HttpStatus.OK);
     }
 
 }

@@ -115,20 +115,31 @@ public class ImageServiceImpl implements ImageService
             BucketName.PROFILE_IMAGE.getBucketName(), userService.findUserById(id));
         String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
 
-        newImage.setName(filename);
-        newImage.setUser(user);
+        newImage.setName(filename); // S3 Link
+        newImage.setUser(userService.findUserById(id));
         newImage.setLink(path);
 
         try
         {
             fileStore.save(path,filename,Optional.of(metadata),file.getInputStream());
-            user.getImagetables().add(newImage);
-            userService.save(user);
         }catch (IOException e)
         {
             throw  new IllegalStateException(e);
         }
         return imageRepository.save(newImage);
+    }
+
+    @Transactional
+    @Override
+    public byte[] downloadImage(Long userid, Long imageid)
+    {
+        User user = userRepository.findById(userid)
+            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
+        Image image = findImageById(imageid);
+        String key = image.getName();
+        String path = image.getLink();
+
+        return fileStore.download(path,key);
     }
 
     private Map<String, String> extractMetadata(MultipartFile file) {
@@ -170,24 +181,23 @@ public class ImageServiceImpl implements ImageService
         }
     }
 
-    @Transactional
-    @Override
-    public byte[] downloadImage(Long userid, Long imageid)
-    {
-        User user = userRepository.findById(userid)
-            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
-        Image image = findImageById(imageid);
-        String path = String.format("%s/%s",
-            BucketName.PROFILE_IMAGE.getBucketName(),
-            user.getId());
-        String key = image.getLink();
-        return fileStore.download(path,key);
-    }
     @Async
     public void deleteFile(final String keyName) {
         String bucketName = BucketName.PROFILE_IMAGE.getBucketName();
         final DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, keyName);
         amazonS3.deleteObject(deleteObjectRequest);
+    }
+
+    @Override
+    public List<Image> findCurrentUserImages(Long userid) {
+        List<Image> images = new ArrayList<>();
+        User user = userRepository.findById(userid)
+            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
+        imageRepository.findCurrentUserImages(userid)
+            .iterator()
+            .forEachRemaining(images::add);
+;
+        return images;
     }
 
 }
