@@ -142,6 +142,18 @@ public class ImageServiceImpl implements ImageService
         return fileStore.download(path,key);
     }
 
+    @Override
+    public List<Image> findCurrentUserImages(Long userid) {
+        List<Image> images = new ArrayList<>();
+        User user = userRepository.findById(userid)
+            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
+        imageRepository.findCurrentUserImages(userid)
+            .iterator()
+            .forEachRemaining(images::add);
+        ;
+        return images;
+    }
+
     private Map<String, String> extractMetadata(MultipartFile file) {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
@@ -186,18 +198,6 @@ public class ImageServiceImpl implements ImageService
         String bucketName = BucketName.PROFILE_IMAGE.getBucketName();
         final DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, keyName);
         amazonS3.deleteObject(deleteObjectRequest);
-    }
-
-    @Override
-    public List<Image> findCurrentUserImages(Long userid) {
-        List<Image> images = new ArrayList<>();
-        User user = userRepository.findById(userid)
-            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
-        imageRepository.findCurrentUserImages(userid)
-            .iterator()
-            .forEachRemaining(images::add);
-;
-        return images;
     }
 
 }
