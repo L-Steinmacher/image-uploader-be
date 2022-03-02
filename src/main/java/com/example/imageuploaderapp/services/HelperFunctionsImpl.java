@@ -1,5 +1,6 @@
 package com.example.imageuploaderapp.services;
 
+import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.models.ValidationError;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.security.core.Authentication;
@@ -9,14 +10,16 @@ import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedExc
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+
+import static org.apache.http.entity.ContentType.*;
 
 @Service(value = "helperFunctions")
 public class HelperFunctionsImpl
@@ -98,4 +101,47 @@ public class HelperFunctionsImpl
             throw new OAuth2AccessDeniedException();
         }
     }
+
+    /**
+     * Takes in a file and extracts meta data for storage in S3
+     * @param file
+     * @return
+     */
+    @Override
+    public Map<String, String> extractMetadata(MultipartFile file) {
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("Content-Type", file.getContentType());
+        metadata.put("Content-Length", String.valueOf(file.getSize()));
+        return metadata;
+    }
+
+    /**
+     * Simple check to see is file is of accepted type
+     * @param file
+     */
+    @Override
+    public void isImage(MultipartFile file)
+    {
+        if (!Arrays.asList(
+            IMAGE_JPEG.getMimeType(),
+            IMAGE_PNG.getMimeType(),
+            IMAGE_GIF.getMimeType()).contains(file.getContentType()))
+        {
+            throw new ResourceNotFoundException("File must be an image! [" + file.getContentType() + "]");
+        }
+    }
+
+    /**
+     * Checks to see is file has content
+     * @param file
+     */
+    @Override
+    public void isFileEmpty(MultipartFile file)
+    {
+        if (file.isEmpty())
+        {
+            throw new ResourceNotFoundException("Cannot upload and empty file! [" + file.getSize() + "]");
+        }
+    }
+
 }

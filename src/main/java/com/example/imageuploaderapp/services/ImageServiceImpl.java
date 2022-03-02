@@ -100,16 +100,16 @@ public class ImageServiceImpl implements ImageService
         Image newImage = new Image();
 
         //check if image is not empty
-        isFileEmpty(file);
+        helperFunctions.isFileEmpty(file);
 
         //check if file is an image
-        isImage(file);
+        helperFunctions.isImage(file);
 
         // The user exists in database
         User user = userService.findUserById(id);
 
         // Grabs metadata from file if any
-        Map<String, String> metadata = extractMetadata(file);
+        Map<String, String> metadata = helperFunctions.extractMetadata(file);
 
         String path = String.format("%s/%s",
             BucketName.PROFILE_IMAGE.getBucketName(), userService.findUserById(id));
@@ -152,32 +152,6 @@ public class ImageServiceImpl implements ImageService
             .forEachRemaining(images::add);
         ;
         return images;
-    }
-
-    private Map<String, String> extractMetadata(MultipartFile file) {
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("Content-Type", file.getContentType());
-        metadata.put("Content-Length", String.valueOf(file.getSize()));
-        return metadata;
-    }
-
-    private void isImage(MultipartFile file)
-    {
-        if (!Arrays.asList(
-            IMAGE_JPEG.getMimeType(),
-            IMAGE_PNG.getMimeType(),
-            IMAGE_GIF.getMimeType()).contains(file.getContentType()))
-        {
-            throw new ResourceNotFoundException("File must be an image! [" + file.getContentType() + "]");
-        }
-    }
-
-    private void isFileEmpty(MultipartFile file)
-    {
-        if (file.isEmpty())
-        {
-            throw new ResourceNotFoundException("Cannot upload and empty file! [" + file.getSize() + "]");
-        }
     }
 
     @Transactional
