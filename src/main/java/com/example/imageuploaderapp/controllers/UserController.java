@@ -1,6 +1,7 @@
 package com.example.imageuploaderapp.controllers;
 
 
+import com.example.imageuploaderapp.models.Image;
 import com.example.imageuploaderapp.models.User;
 import com.example.imageuploaderapp.services.ImageService;
 import com.example.imageuploaderapp.services.UserService;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,11 +42,7 @@ public class UserController
     @Autowired
     private ImageService imageService;
 
-    /**
-     * Using the Image service to process image data
-     */
-//    @Autowired
-//    private ImageService imageService;
+
 
     /**
      * Returns a list of all users
@@ -129,13 +127,12 @@ public class UserController
      * @throws URISyntaxException Exception if something does not work in creating the location header
      * @see UserService#save(User) UserService.save(User)
      */
-    @ApiOperation("Creates a new user in the USER table.")
     @PostMapping(value = "/user",
-    consumes = "application/json")
+        consumes = "application/json")
     public ResponseEntity<?> addNewUser(
         @Valid
         @RequestBody
-        User newuser) throws URISyntaxException
+            User newuser) throws URISyntaxException
     {
         newuser.setId(0);
         newuser = userService.save(newuser);
@@ -167,7 +164,7 @@ public class UserController
      * @see UserService#save(User) UserService.save(User)
      */
     @PutMapping(value = "/user/{userid}",
-    consumes = "application/json")
+        consumes = "application/json")
     public ResponseEntity<?> updateFullUser(
         @Valid
         @RequestBody User updateUser,
@@ -191,7 +188,7 @@ public class UserController
      * @see UserService#update(User, long) UserService.update(User, long)
      */
     @PatchMapping(value = "/user/{id}",
-    consumes = "application/json")
+        consumes = "application/json")
     public ResponseEntity<?> updateUser(
         @RequestBody User updateUser,
         @PathVariable long id)
@@ -250,6 +247,23 @@ public class UserController
                                 @PathVariable("imageid") Long imageid)
     {
         return imageService.downloadImage(userid, imageid);
+    }
+
+    @GetMapping(value = "/user/{userid}/images/")
+    public ResponseEntity<?> getImages(@PathVariable("userid") Long userid)
+    {
+        List<Image> myImages = imageService.findCurrentUserImages(userid);
+        return new ResponseEntity<>(myImages,
+            HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/images/")
+    public ResponseEntity<?> getAllImages()
+    {
+        List<Image> myImages = imageService.findAllImages();
+        return new ResponseEntity<>(myImages,
+            HttpStatus.OK);
     }
 
 }

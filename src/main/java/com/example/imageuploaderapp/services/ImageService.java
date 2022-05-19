@@ -27,6 +27,19 @@ public interface ImageService
      */
     Image uploadImage (long id, MultipartFile file);
 
+    /**
+     * downloads an image from s3
+     * @param userid
+     * @param imageid
+     * @return
+     */
     public byte[] downloadImage(Long userid, Long imageid);
+
+    /**
+     * finds the currents users images
+     * @param userid
+     * @return
+     */
+    public List<Image> findCurrentUserImages(Long userid);
 
 }

@@ -100,61 +100,58 @@ public class ImageServiceImpl implements ImageService
         Image newImage = new Image();
 
         //check if image is not empty
-        isFileEmpty(file);
+        helperFunctions.isFileEmpty(file);
 
         //check if file is an image
-        isImage(file);
+        helperFunctions.isImage(file);
 
         // The user exists in database
         User user = userService.findUserById(id);
 
         // Grabs metadata from file if any
-        Map<String, String> metadata = extractMetadata(file);
+        Map<String, String> metadata = helperFunctions.extractMetadata(file);
 
         String path = String.format("%s/%s",
             BucketName.PROFILE_IMAGE.getBucketName(), userService.findUserById(id));
         String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
 
-        newImage.setName(filename);
-        newImage.setUser(user);
+        newImage.setName(filename); // S3 Link
+        newImage.setUser(userService.findUserById(id));
         newImage.setLink(path);
 
         try
         {
             fileStore.save(path,filename,Optional.of(metadata),file.getInputStream());
-            user.getImagetables().add(newImage);
-            userService.save(user);
         }catch (IOException e)
         {
             throw  new IllegalStateException(e);
         }
-        return newImage;
+        return imageRepository.save(newImage);
     }
 
-    private Map<String, String> extractMetadata(MultipartFile file) {
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("Content-Type", file.getContentType());
-        metadata.put("Content-Length", String.valueOf(file.getSize()));
-        return metadata;
-    }
-
-    private void isImage(MultipartFile file)
+    @Transactional
+    @Override
+    public byte[] downloadImage(Long userid, Long imageid)
     {
-        if (!Arrays.asList(
-            IMAGE_JPEG.getMimeType(),
-            IMAGE_PNG.getMimeType(),
-            IMAGE_GIF.getMimeType()).contains(file.getContentType()))
-        {
-            throw new ResourceNotFoundException("File must be an image! [" + file.getContentType() + "]");
-        }
+        User user = userRepository.findById(userid)
+            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
+        Image image = findImageById(imageid);
+        String key = image.getName();
+        String path = image.getLink();
+
+        return fileStore.download(path,key);
     }
 
-    private void isFileEmpty(MultipartFile file)
-    {
-        if (file.isEmpty())
-        {
-            throw new ResourceNotFoundException("Cannot upload and empty file! [" + file.getSize() + "]");
-        }
+    @Override
+    public List<Image> findCurrentUserImages(Long userid) {
+        List<Image> images = new ArrayList<>();
+        User user = userRepository.findById(userid)
+            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
+        imageRepository.findCurrentUserImages(userid)
+            .iterator()
+            .forEachRemaining(images::add);
+        ;
+        return images;
     }
 
     @Transactional
@@ -170,19 +167,6 @@ public class ImageServiceImpl implements ImageService
         }
     }
 
-    @Transactional
-    @Override
-    public byte[] downloadImage(Long userid, Long imageid)
-    {
-        User user = userRepository.findById(userid)
-            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
-        Image image = findImageById(imageid);
-        String path = String.format("%s/%s",
-            BucketName.PROFILE_IMAGE.getBucketName(),
-            user.getId());
-        String key = image.getLink();
-        return fileStore.download(path,key);
-    }
     @Async
     public void deleteFile(final String keyName) {
         String bucketName = BucketName.PROFILE_IMAGE.getBucketName();

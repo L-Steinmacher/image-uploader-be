@@ -1,8 +1,10 @@
 package com.example.imageuploaderapp.services;
 
 import com.example.imageuploaderapp.models.ValidationError;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class contains helper functions - functions that are needed throughout the application. The class can be autowired
@@ -26,5 +28,11 @@ public interface HelperFunctions
      * @return true if the user can make the modifications, otherwise an exception is thrown
      */
     boolean isAuthorizedToMakeChange(String username);
+
+    Map<String, String> extractMetadata(MultipartFile file);
+
+    void isImage(MultipartFile file);
+
+    void isFileEmpty(MultipartFile file);
 
 }
