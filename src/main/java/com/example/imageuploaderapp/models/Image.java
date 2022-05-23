@@ -26,20 +26,24 @@ public class Image
         allowSetters = true)
     private User user;
 
-    /**
-     * Todo  many to one image to hike
-     */
+    @ManyToOne()
+    @JoinColumn(name = "hikeid", nullable = false)
+    @JsonIgnoreProperties(value = "images",
+    allowSetters = true)
+    private Hike hike;
 
     public Image(){}
 
     public Image(
         String name,
         String link,
-        User user)
+        User user,
+        Hike hike)
     {
         this.name = name;
         this.link = link;
         this.user = user;
+        this.hike = hike;
     }
 
     public Long getId()
@@ -82,5 +86,7 @@ public class Image
         this.user = user;
     }
 
+    public Hike getHike() { return hike; }
 
+    public void setHike(Hike hike) { this.hike = hike; }
 }

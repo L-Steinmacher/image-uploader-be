@@ -1,5 +1,7 @@
 package com.example.imageuploaderapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,27 +27,22 @@ public class Hike
     @Column(name = "review")
     private Long rating;
 
+//    @OneToMany(mappedBy = "hike",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true)
+//    @JsonIgnoreProperties(value = "hike",
+//        allowSetters = true)
+//    private List<Image> images = new ArrayList<>();
 
-    private List<Image> images = new ArrayList<>();
-
-    private Set<UserHikes> users = new HashSet<>();
-    /**
-    *Todo
-     * one to many one hike to many images
-     * many to one user
-    */
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "trail_trailid")
+    @JoinColumn(name = "trailid")
     private Trail trail;
 
-    public Trail getTrail() {
-        return trail;
-    }
 
-    public void setTrail(Trail trail) {
-        this.trail = trail;
-    }
 
 
 }

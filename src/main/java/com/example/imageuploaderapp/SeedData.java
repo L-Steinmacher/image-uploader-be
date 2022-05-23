@@ -1,6 +1,7 @@
 package com.example.imageuploaderapp;
 
 import com.example.imageuploaderapp.models.Role;
+import com.example.imageuploaderapp.models.Trail;
 import com.example.imageuploaderapp.models.User;
 import com.example.imageuploaderapp.models.UserRoles;
 import com.example.imageuploaderapp.services.ImageService;
@@ -87,6 +88,12 @@ public class SeedData implements CommandLineRunner
         userService.save(u2);
         userService.save(u3);
         userService.save(u4);
+
+        Trail t1 = new Trail("Rattlesnake Ledge",
+                             "Head out on this 5.3-mile out-and-back trail near North Bend, Washington. Generally considered a moderately challenging route, it takes an average of 2 h 46 min to complete. This is a very popular area for hiking, so you'll likely encounter other people while exploring. The trail is open year-round and is beautiful to visit anytime. Dogs are welcome, but must be on a leash.",
+                             47.434889,
+                             -121.768648);
+
 
     }
 }
