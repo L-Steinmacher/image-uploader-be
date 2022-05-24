@@ -1,5 +1,7 @@
 package com.example.imageuploaderapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,8 +18,8 @@ public class Hike
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hikeid;
 
-    @Column(name = "hikedate", nullable = false)
-    private Date hikedate;
+//    @Column(name = "hikedate", nullable = false)
+//    private Date hikedate;
 
     @Column(name = "comment")
     private String comments;
@@ -25,19 +27,65 @@ public class Hike
     @Column(name = "review")
     private Long rating;
 
+//    @OneToMany(mappedBy = "hike",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true)
+//    @JsonIgnoreProperties(value = "hike",
+//        allowSetters = true)
+//    private List<Image> images = new ArrayList<>();
 
-    private List<Image> images = new ArrayList<>();
-
-    private Set<UserHikes> users = new HashSet<>();
-    /**
-    *Todo
-     * one to many one hike to many images
-     * many to one user
-    */
+    @OneToOne
+    @JoinColumn(name = "userid")
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "trail_trailid")
+    @JoinColumn(name = "trailid")
     private Trail trail;
+
+    public Hike() {
+    }
+
+    public Hike(String comments,
+                Long rating,
+                User user,
+                Trail trail) {
+        this.comments = comments;
+        this.rating = rating;
+        this.user = user;
+        this.trail = trail;
+    }
+
+    public Long getHikeid() {
+        return hikeid;
+    }
+
+    public void setHikeid(Long hikeid) {
+        this.hikeid = hikeid;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public Long getRating() {
+        return rating;
+    }
+
+    public void setRating(Long rating) {
+        this.rating = rating;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Trail getTrail() {
         return trail;
@@ -46,6 +94,4 @@ public class Hike
     public void setTrail(Trail trail) {
         this.trail = trail;
     }
-
-
 }
