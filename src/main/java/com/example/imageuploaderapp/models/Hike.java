@@ -18,8 +18,8 @@ public class Hike
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hikeid;
 
-    @Column(name = "hikedate", nullable = false)
-    private Date hikedate;
+//    @Column(name = "hikedate", nullable = false)
+//    private Date hikedate;
 
     @Column(name = "comment")
     private String comments;
@@ -35,14 +35,63 @@ public class Hike
 //    private List<Image> images = new ArrayList<>();
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userid")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "trailid")
     private Trail trail;
 
+    public Hike() {
+    }
 
+    public Hike(String comments,
+                Long rating,
+                User user,
+                Trail trail) {
+        this.comments = comments;
+        this.rating = rating;
+        this.user = user;
+        this.trail = trail;
+    }
 
+    public Long getHikeid() {
+        return hikeid;
+    }
 
+    public void setHikeid(Long hikeid) {
+        this.hikeid = hikeid;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public Long getRating() {
+        return rating;
+    }
+
+    public void setRating(Long rating) {
+        this.rating = rating;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Trail getTrail() {
+        return trail;
+    }
+
+    public void setTrail(Trail trail) {
+        this.trail = trail;
+    }
 }
