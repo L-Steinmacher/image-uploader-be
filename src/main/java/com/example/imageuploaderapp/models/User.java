@@ -76,9 +76,12 @@ public class User extends Auditable
         allowSetters = true)
     private Set<Image> imagetables = new HashSet<>();
 
-    /**
-     * Todo one to many user to hike
-     */
+    @OneToMany(mappedBy = "user",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true)
+    @JsonIgnoreProperties(value = "user",
+    allowSetters = true)
+    private List<Hike> hikes = new ArrayList<>();
 
     public User()
     {
@@ -187,6 +190,14 @@ public class User extends Auditable
     public void setImagetables(Set<Image> images)
     {
         this.imagetables = images;
+    }
+
+    public List<Hike> getHikes() {
+        return hikes;
+    }
+
+    public void setHikes(List<Hike> hikes) {
+        this.hikes = hikes;
     }
 
     /**
