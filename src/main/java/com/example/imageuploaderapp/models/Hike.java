@@ -14,14 +14,13 @@ import java.util.Set;
 public class Hike
 {
     @Id
-    @Column(name = "hikeid")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hikeid;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long hikeid;
 
 //    @Column(name = "hikedate", nullable = false)
 //    private Date hikedate;
 
-    @Column(name = "comment")
+    @Column(columnDefinition = "TEXT")
     private String comments;
 
     @Column(name = "review")
@@ -34,19 +33,21 @@ public class Hike
 //        allowSetters = true)
 //    private List<Image> images = new ArrayList<>();
 
-    @OneToOne
+    @ManyToOne()
     @JoinColumn(name = "userid")
+    @JsonIgnoreProperties(value = "hikes", allowSetters = true)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "trailid")
+    @JoinColumn(name = "trailid", nullable = false)
+    @JsonIgnoreProperties(value = "hikes", allowSetters = true)
     private Trail trail;
 
     public Hike() {
     }
 
     public Hike(String comments,
-                Long rating,
+                long rating,
                 User user,
                 Trail trail) {
         this.comments = comments;
@@ -55,11 +56,11 @@ public class Hike
         this.trail = trail;
     }
 
-    public Long getHikeid() {
+    public long getHikeid() {
         return hikeid;
     }
 
-    public void setHikeid(Long hikeid) {
+    public void setHikeid(long hikeid) {
         this.hikeid = hikeid;
     }
 

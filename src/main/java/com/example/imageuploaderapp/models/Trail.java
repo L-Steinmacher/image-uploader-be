@@ -17,7 +17,7 @@ public class Trail extends Auditable
     @Column(nullable = false)
     private String trailname;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT",nullable = false)
     private String traildiscription;
 
     @Column(nullable = false)

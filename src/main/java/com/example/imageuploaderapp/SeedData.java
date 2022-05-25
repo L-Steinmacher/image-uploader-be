@@ -1,12 +1,7 @@
 package com.example.imageuploaderapp;
 
-import com.example.imageuploaderapp.models.Role;
-import com.example.imageuploaderapp.models.Trail;
-import com.example.imageuploaderapp.models.User;
-import com.example.imageuploaderapp.models.UserRoles;
-import com.example.imageuploaderapp.services.ImageService;
-import com.example.imageuploaderapp.services.RoleService;
-import com.example.imageuploaderapp.services.UserService;
+import com.example.imageuploaderapp.models.*;
+import com.example.imageuploaderapp.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,13 +19,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class SeedData implements CommandLineRunner
 {
     @Autowired
-    ImageService imageService;
+    private ImageService imageService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
+
+    @Autowired
+    private TrailService trailService;
+
+    @Autowired
+    private HikeService hikeService;
 
     @Transactional
     @Override
@@ -84,16 +85,34 @@ public class SeedData implements CommandLineRunner
         u4.getRoles()
             .add(new UserRoles(u4,
                 r2));
-        userService.save(u1);
-        userService.save(u2);
-        userService.save(u3);
-        userService.save(u4);
+
 
         Trail t1 = new Trail("Rattlesnake Ledge",
                              "Head out on this 5.3-mile out-and-back trail near North Bend, Washington. Generally considered a moderately challenging route, it takes an average of 2 h 46 min to complete. This is a very popular area for hiking, so you'll likely encounter other people while exploring. The trail is open year-round and is beautiful to visit anytime. Dogs are welcome, but must be on a leash.",
                              47.434889,
                              -121.768648);
 
+
+//        Hike h2 = new Hike(
+//                "sunny and fun!",
+//                4L,
+//                u1,
+//                t1);
+
+        u1 = userService.save(u1);
+        u2 = userService.save(u2);
+        u3 = userService.save(u3);
+        u4 = userService.save(u4);
+
+        t1 = trailService.save(t1);
+
+        Hike h1 = new Hike(
+                "it was fun!",
+                3L,
+                u2,
+                t1);
+
+        h1 = hikeService.save(h1);
 
     }
 }
