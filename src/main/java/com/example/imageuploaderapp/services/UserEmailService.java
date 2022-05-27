@@ -14,5 +14,6 @@ public interface UserEmailService
     /**
      * Find email my id
      */
+
     UserEmail findUserEmailById(long id);
 }

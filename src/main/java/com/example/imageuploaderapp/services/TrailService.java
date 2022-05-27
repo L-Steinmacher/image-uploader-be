@@ -1,6 +1,7 @@
 package com.example.imageuploaderapp.services;
 
 import com.example.imageuploaderapp.models.Trail;
+import com.example.imageuploaderapp.views.AverageRating;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface TrailService {
             long id);
 
     public void deleteAll();
+
+    public List<AverageRating> getAllAverages();
 }

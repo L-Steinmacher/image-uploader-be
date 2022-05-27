@@ -4,6 +4,7 @@ import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.models.Hike;
 import com.example.imageuploaderapp.models.Trail;
 import com.example.imageuploaderapp.repository.TrailRepository;
+import com.example.imageuploaderapp.views.AverageRating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,6 +88,12 @@ public class TrailServiceImpl implements TrailService {
         return trailRepository.save(newTrail);
     }
 
+    /**
+     * Todo implament update meothod
+     * @param trail
+     * @param id
+     * @return
+     */
     @Transactional
     @Override
     public Trail update(Trail trail, long id) {
@@ -98,5 +105,11 @@ public class TrailServiceImpl implements TrailService {
     @Override
     public void deleteAll() {
         trailRepository.deleteAll();
+    }
+
+    @Override
+    public List<AverageRating> getAllAverages() {
+        List<AverageRating> list = trailRepository.findAllAverageRating();
+        return list;
     }
 }
