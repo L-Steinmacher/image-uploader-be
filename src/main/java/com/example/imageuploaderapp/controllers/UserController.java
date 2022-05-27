@@ -138,7 +138,7 @@ public class UserController
         // set the location header for the newly created resource
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newUserURI = ServletUriComponentsBuilder.fromCurrentRequest()
-            .path("/{userid")
+            .path("/{userid}")
             .buildAndExpand(newuser.getId())
             .toUri();
         responseHeaders.setLocation(newUserURI);

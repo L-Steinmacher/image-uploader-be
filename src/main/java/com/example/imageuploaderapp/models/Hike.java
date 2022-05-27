@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "hikes")
-public class Hike
+public class Hike extends Auditable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,7 +46,8 @@ public class Hike
     public Hike() {
     }
 
-    public Hike(String comments,
+    public Hike(
+                String comments,
                 long rating,
                 User user,
                 Trail trail) {

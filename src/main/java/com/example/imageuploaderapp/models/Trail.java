@@ -20,10 +20,10 @@ public class Trail extends Auditable
     @Column(columnDefinition = "TEXT",nullable = false)
     private String traildiscription;
 
-    @Column(nullable = false)
+    @Column
     private double latitude;
 
-    @Column(nullable = false)
+    @Column
     private double longitude;
 
     @OneToMany(mappedBy = "trail",
@@ -39,7 +39,8 @@ public class Trail extends Auditable
     public Trail(String trailname,
                  String traildiscription,
                  double latitude,
-                 double longitude) {
+                 double longitude)
+    {
         this.trailname = trailname;
         this.traildiscription = traildiscription;
         this.latitude = latitude;
