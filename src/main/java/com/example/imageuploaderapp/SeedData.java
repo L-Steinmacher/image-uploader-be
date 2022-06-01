@@ -90,13 +90,12 @@ public class SeedData implements CommandLineRunner
         Trail t1 = new Trail("Rattlesnake Ledge",
                              "Head out on this 5.3-mile out-and-back trail near North Bend, Washington. Generally considered a moderately challenging route, it takes an average of 2 h 46 min to complete. This is a very popular area for hiking, so you'll likely encounter other people while exploring. The trail is open year-round and is beautiful to visit anytime. Dogs are welcome, but must be on a leash.",
                             47.434889,
-                            -121.768648);
+                            121.4643);
 
-//        Hike h2 = new Hike(
-//                "sunny and fun!",
-//                4L,
-//                u1,
-//                t1);
+        Trail t2 = new Trail("Ravenna Park Trail",
+                "go to ravenna",
+                47.6687,
+                122.3037);
 
         u1 = userService.save(u1);
         u2 = userService.save(u2);
@@ -104,14 +103,43 @@ public class SeedData implements CommandLineRunner
         u4 = userService.save(u4);
 
         t1 = trailService.save(t1);
+        t2 = trailService.save(t2);
 
         Hike h1 = new Hike(
                 "it was fun!",
-                3L,
+                3.0d,
                 u2,
                 t1);
 
+        Hike h2 = new Hike(
+                "sunny and fun!",
+                4.0d,
+                u1,
+                t1);
+
+        Hike h3 = new Hike(
+                "booo!",
+                1.0d,
+                u3,
+                t1);
+
+        Hike h4 = new Hike(
+                "yay!",
+                5.0d,
+                u4,
+                t1);
+
+        Hike h5 = new Hike(
+                "more fun!",
+                3.0d,
+                u3,
+                t2);
+
         h1 = hikeService.save(h1);
+        h2 = hikeService.save(h2);
+        h3 = hikeService.save(h3);
+        h4 = hikeService.save(h4);
+        h5 = hikeService.save(h5);
 
     }
 }

@@ -1,6 +1,5 @@
 package com.example.imageuploaderapp.controllers;
 
-import com.amazonaws.services.sagemaker.model.Trial;
 import com.example.imageuploaderapp.models.Hike;
 import com.example.imageuploaderapp.models.MinHike;
 import com.example.imageuploaderapp.models.Trail;
@@ -26,7 +25,7 @@ import java.util.List;
 public class TrailController {
 
     @Autowired
-    private TrailService trailService;
+    public TrailService trailService;
 
     @Autowired
     private HikeService hikeService;
@@ -153,18 +152,15 @@ public class TrailController {
 
 
     /**
-     * www.example.com/trails/trail/{trailid}/rating
-     * [
-     *  { trailid: 1, average: 4 },
-     *  { trailid: 2, average: 3.5 }
-     * ]
+     * www.example.com/trails/trails/ratings
+     *
      */
-    @GetMapping(value = "/trail/{trailid}/rating",
+    @GetMapping(value = "/trails/ratings",
         produces = "application/json")
-    public ResponseEntity<?> getAverageRating(
-            @PathVariable long trailid)
+    public ResponseEntity<?> findAverageRating()
     {
         List<AverageRating> list = trailService.getAllAverages();
+        System.out.println(list);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
