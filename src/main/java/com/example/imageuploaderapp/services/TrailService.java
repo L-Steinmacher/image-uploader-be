@@ -22,7 +22,7 @@ public interface TrailService {
             Trail trail,
             long id);
 
-    public void deleteAll();
+    void deleteAll();
 
-    public List<AverageRating> getAllAverages();
+    List<AverageRating> getAllAverages();
 }

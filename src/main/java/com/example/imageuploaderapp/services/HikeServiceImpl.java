@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service(value = "hikeService")
 public class HikeServiceImpl implements HikeService{
     @Autowired
-    HikeRepository hikeRepository;
+    private HikeRepository hikeRepository;
 
     @Autowired
     private UserService userService;
@@ -45,18 +45,45 @@ public class HikeServiceImpl implements HikeService{
         return hikeRepository.save(newHike);
     }
 
+    /**
+     * Updats a partial hike in the Hikes Table by hike id.
+     * @param hike hike object
+     * @param id id of the hike to be updated.
+     * @return
+     */
     @Override
-    public Hike update(Hike hike, long id) {
-        return null;
+    public Hike update(Hike hike, long id)
+    {
+        Hike currHike = hikeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Hike with id " + id + " not found!"));
+
+        if (hike.getComments() != null) {
+            currHike.setComments(hike.getComments());
+        }
+
+        if (hike.getRating() != 0) {
+            currHike.setRating(hike.getRating());
+        }
+
+        return hikeRepository.save(currHike);
     }
 
+    /**
+     * Deletes a hike from Hikes table by id
+     * @param id id of the hike
+     */
     @Override
     public void delete(long id) {
-
+        Hike delHike = hikeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Hike with id " + id + " not found!"));
+        hikeRepository.delete(delHike);
     }
 
+    /**
+     * Nukes the Hikes table database deleting all rows.
+     */
     @Override
     public void deleteAll() {
-
+        hikeRepository.deleteAll();
     }
 }

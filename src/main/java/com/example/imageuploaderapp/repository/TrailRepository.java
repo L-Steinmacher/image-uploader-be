@@ -7,16 +7,18 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface TrailRepository extends CrudRepository<Trail, Long> {
+public interface TrailRepository extends CrudRepository<Trail, Long>
+{
 
     Trail findByTrailname(String trailname);
 
     List<Trail> findByTrailnameContainingIgnoreCase(String trailname);
 
-    @Query(value = "SELECT t.trailid, avg(h.review)\n" +
-            "FROM TRAILS as t\n" +
-            "left join hikes as h\n" +
-            "ON t.trailid = h.trailid\n" +
-            "group by t.trailid;",nativeQuery = true)
+    @Query(value = "SELECT t.trailid, avg(h.rating) as Average " +
+            "FROM trails t LEFT JOIN hikes h " +
+            "ON t.trailid = h.trailid " +
+            "WHERE h.rating != null " +
+            "GROUP BY t.trailid",
+            nativeQuery = true)
     List<AverageRating> findAllAverageRating();
 }

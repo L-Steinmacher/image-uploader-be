@@ -1,5 +1,6 @@
 package com.example.imageuploaderapp.services;
 
+import com.amazonaws.services.lambda.model.transform.AccountUsageJsonUnmarshaller;
 import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.models.Hike;
 import com.example.imageuploaderapp.models.Trail;
@@ -89,16 +90,33 @@ public class TrailServiceImpl implements TrailService {
     }
 
     /**
-     * Todo implament update meothod
-     * @param trail
-     * @param id
+     * Updates the trail object by trail id. May update one or more fields.
+     * @param trail partial trail object to update with
+     * @param id id of the trail
      * @return
      */
     @Transactional
     @Override
-    public Trail update(Trail trail, long id) {
+    public Trail update(Trail trail, long id)
+    {
+        Trail currTrail = trailRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Trail with id " + id + " not found!"));
+        if (trail.getTrailname() != null) {
+            currTrail.setTrailname(trail.getTrailname());
+        }
 
-        return null;
+        if (trail.getTraildiscription() != null){
+            currTrail.setTraildiscription(trail.getTraildiscription());
+        }
+
+        if (trail.getLatitude() != 0.0) {
+            currTrail.setLatitude(trail.getLatitude());
+        }
+
+        if (trail.getLongitude() != 0.0) {
+            currTrail.setLongitude(trail.getLongitude());
+        }
+
+        return trailRepository.save(currTrail);
     }
 
     @Transactional
@@ -112,4 +130,5 @@ public class TrailServiceImpl implements TrailService {
         List<AverageRating> list = trailRepository.findAllAverageRating();
         return list;
     }
+
 }

@@ -3,11 +3,6 @@ package com.example.imageuploaderapp.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "hikes")
@@ -23,8 +18,8 @@ public class Hike extends Auditable
     @Column(columnDefinition = "TEXT")
     private String comments;
 
-    @Column(name = "review")
-    private Long rating;
+    @Column(name = "rating")
+    private double rating;
 
 //    @OneToMany(mappedBy = "hike",
 //            cascade = CascadeType.ALL,
@@ -47,10 +42,10 @@ public class Hike extends Auditable
     }
 
     public Hike(
-                String comments,
-                long rating,
-                User user,
-                Trail trail) {
+            String comments,
+            double rating,
+            User user,
+            Trail trail) {
         this.comments = comments;
         this.rating = rating;
         this.user = user;
@@ -73,11 +68,11 @@ public class Hike extends Auditable
         this.comments = comments;
     }
 
-    public Long getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(Long rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 

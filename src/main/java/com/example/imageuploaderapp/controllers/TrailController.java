@@ -1,6 +1,5 @@
 package com.example.imageuploaderapp.controllers;
 
-import com.amazonaws.services.sagemaker.model.Trial;
 import com.example.imageuploaderapp.models.Hike;
 import com.example.imageuploaderapp.models.MinHike;
 import com.example.imageuploaderapp.models.Trail;
@@ -54,7 +53,7 @@ public class TrailController {
     }
 
     /**
-     * www.examole.com/trails/trail/{trailId}
+     * www.example.com/trails/trail/{trailId}
      * @param newTrail
      * @return
      * @throws URISyntaxException
@@ -82,6 +81,12 @@ public class TrailController {
                 HttpStatus.CREATED);
     }
 
+    /**
+     *
+     * @param updateTrail
+     * @param trailid
+     * @return
+     */
     @ApiOperation("Update Entire Trail Object")
     @PutMapping(value = "/trail/{trailid}",
         consumes = "application/json")
@@ -96,17 +101,29 @@ public class TrailController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     *
+     * @param updateTrial
+     * @param trailid
+     * @return
+     */
     @ApiOperation("Update one-many fields on trail object")
     @PatchMapping(value = "/trail/{trailid}",
-        consumes = "applicaioin/json")
+        consumes = "application/json",
+        produces = "application/json")
     public ResponseEntity<?> updateTrail(
             @RequestBody Trail updateTrial,
             @PathVariable long trailid)
     {
-        trailService.update(updateTrial, trailid);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        Trail updatedTrial = trailService.update(updateTrial, trailid);
+        return new ResponseEntity<>(updatedTrial, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param trailId
+     * @return
+     */
     @ApiOperation("Delete trail by id")
     @DeleteMapping(value = "/trail/{trailId}")
     public ResponseEntity<?> deleteTrailById(
@@ -123,6 +140,7 @@ public class TrailController {
      * @param id
      * @return
      */
+    @ApiOperation("Saves new hike to the database.")
     @PostMapping(value = "/trail/{trailId}/",
             consumes = "application/json")
     public ResponseEntity<?> createNewHike(
@@ -141,28 +159,61 @@ public class TrailController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    /**
+     *
+     * @param trailid
+     * @return
+     */
+    @ApiOperation("Get all hikes for a given trail.")
     @GetMapping(value = "/trail/{trailid}/hikes",
         produces = "application/json")
     public ResponseEntity<?> getTrailHikes(
-            @PathVariable long trailid
-    )
+            @PathVariable long trailid)
     {
         List<Hike> list = trailService.findTrailById(trailid).getHikes();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    /**
+     * www.example.com/trails/trail/hikes/14
+     * Updates a hike by id
+     * @return
+     */
+    @ApiOperation("Patch/update hike")
+    @PatchMapping(value = "/trail/hikes/{hikeid}",
+        consumes = "application/json",
+        produces = "application/json")
+    public ResponseEntity<?> updateHike(
+            @PathVariable long hikeid,
+            @RequestBody Hike hike)
+    {
+        Hike updateHike = hikeService.update(hike, hikeid);
+        return new ResponseEntity<>(updateHike, HttpStatus.OK);
+    }
 
     /**
-     * www.example.com/trails/trail/{trailid}/rating
-     * [
-     *  { trailid: 1, average: 4 },
-     *  { trailid: 2, average: 3.5 }
-     * ]
+     * www.example.com/trails/trail/hikes/10
+     * @param hikeid id of the hike to be deleted
+     * @return
      */
-    @GetMapping(value = "/trail/{trailid}/rating",
+    @ApiOperation("Deletes a given hike by id")
+    @DeleteMapping(value = "/trail/hikes/{hikeid}")
+    public ResponseEntity<?> deleteHike(
+            @PathVariable long hikeid)
+    {
+        hikeService.delete(hikeid);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    /**
+     * www.example.com/trails/trails/ratings
+     * ToDo debug this
+     */
+    @ApiOperation("Gets all Trail id's as well as the average rating for the trail.")
+    @GetMapping(value = "/trails/ratings",
         produces = "application/json")
-    public ResponseEntity<?> getAverageRating(
-            @PathVariable long trailid)
+    public ResponseEntity<?> findAverageRating()
     {
         List<AverageRating> list = trailService.getAllAverages();
         return new ResponseEntity<>(list, HttpStatus.OK);
