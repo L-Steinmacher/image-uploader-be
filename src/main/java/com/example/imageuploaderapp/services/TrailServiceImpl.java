@@ -131,5 +131,4 @@ public class TrailServiceImpl implements TrailService {
         return list;
     }
 
-
 }
