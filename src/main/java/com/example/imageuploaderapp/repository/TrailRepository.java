@@ -17,7 +17,6 @@ public interface TrailRepository extends CrudRepository<Trail, Long>
     @Query(value = "SELECT t.trailid as trailid, avg(h.rating) as average " +
             "FROM trails t LEFT JOIN hikes h " +
             "ON t.trailid = h.trailid " +
-//            "WHERE h.rating != null " +
             "GROUP BY t.trailid",
             nativeQuery = true)
     List<AverageRating> findAllAverageRating();

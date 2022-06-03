@@ -90,6 +90,8 @@ public class TrailServiceImpl implements TrailService {
     }
 
     /**
+     * TODO add check for HelperFunction.isAuthorizedToMakeChange() arround if statements.
+     *
      * Updates the trail object by trail id. May update one or more fields.
      * @param trail partial trail object to update with
      * @param id id of the trail
@@ -99,7 +101,9 @@ public class TrailServiceImpl implements TrailService {
     @Override
     public Trail update(Trail trail, long id)
     {
-        Trail currTrail = trailRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Trail with id " + id + " not found!"));
+        Trail currTrail = trailRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Trail with id " + id + " not found!"));
+
         if (trail.getTrailname() != null) {
             currTrail.setTrailname(trail.getTrailname());
         }

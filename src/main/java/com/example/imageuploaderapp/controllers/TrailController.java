@@ -208,7 +208,7 @@ public class TrailController {
 
     /**
      * www.example.com/trails/trails/ratings
-     * ToDo debug this
+     *
      */
     @ApiOperation("Gets all Trail id's as well as the average rating for the trail.")
     @GetMapping(value = "/trails/ratings",
@@ -218,4 +218,8 @@ public class TrailController {
         List<AverageRating> list = trailService.getAllAverages();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    /**
+     * ToDo connect to the weather API and test endpoint
+     */
 }

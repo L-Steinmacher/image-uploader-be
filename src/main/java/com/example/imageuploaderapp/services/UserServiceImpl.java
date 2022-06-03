@@ -162,6 +162,13 @@ public class UserServiceImpl
         return userrepos.save(newUser);
     }
 
+    /**
+     * TODO write resourceNotFoundException for update method
+     *
+     * @param user just the user fields to be updated.
+     * @param id   The primary key (long) of the user to update
+     * @return
+     */
     @Transactional
     @Override
     public User update(
