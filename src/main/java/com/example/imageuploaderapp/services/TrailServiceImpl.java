@@ -5,10 +5,13 @@ import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.models.Hike;
 import com.example.imageuploaderapp.models.Trail;
 import com.example.imageuploaderapp.repository.TrailRepository;
+import com.example.imageuploaderapp.schemes.WeatherData;
 import com.example.imageuploaderapp.views.AverageRating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,4 +138,33 @@ public class TrailServiceImpl implements TrailService {
         return list;
     }
 
+    @Override
+    public WeatherData getCurrentWeatherForcast(long trailid) {
+        Trail currTrail = trailRepository.findById(trailid)
+                .orElseThrow(() -> new ResourceNotFoundException("Trail with Id " + trailid + " not found!"));
+
+        String WEATHER_API_KEY = System.getenv("WEATHERAPIKEY");
+
+        System.out.println(WEATHER_API_KEY.length());
+        final String url = "http://api.openweathermap.org";
+
+        WebClient client = WebClient.builder()
+                .baseUrl(url)
+                .build();
+
+        WeatherData currWeather = client
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/data/2.5/forecast")
+                        .queryParam("lat", currTrail.getLatitude())
+                        .queryParam("lon", currTrail.getLongitude())
+                        .queryParam("appid", WEATHER_API_KEY)
+                        .queryParam("units", "imperial")
+                        .build())
+                .retrieve()
+                .bodyToMono(WeatherData.class)
+                .block();
+
+        return currWeather;
+    }
 }

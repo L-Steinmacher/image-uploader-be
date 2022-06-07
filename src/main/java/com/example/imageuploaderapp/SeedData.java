@@ -89,13 +89,13 @@ public class SeedData implements CommandLineRunner
 
         Trail t1 = new Trail("Rattlesnake Ledge",
                              "Head out on this 5.3-mile out-and-back trail near North Bend, Washington. Generally considered a moderately challenging route, it takes an average of 2 h 46 min to complete. This is a very popular area for hiking, so you'll likely encounter other people while exploring. The trail is open year-round and is beautiful to visit anytime. Dogs are welcome, but must be on a leash.",
-                            47.434889,
-                            121.4643);
+                            47.4458,
+                            -121.7950);
 
         Trail t2 = new Trail("Ravenna Park Trail",
                 "go to ravenna",
-                47.6687,
-                122.3037);
+                47.6727,
+                -122.3091);
 
         u1 = userService.save(u1);
         u2 = userService.save(u2);

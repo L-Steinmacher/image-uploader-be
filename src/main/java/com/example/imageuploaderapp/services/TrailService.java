@@ -1,6 +1,7 @@
 package com.example.imageuploaderapp.services;
 
 import com.example.imageuploaderapp.models.Trail;
+import com.example.imageuploaderapp.schemes.WeatherData;
 import com.example.imageuploaderapp.views.AverageRating;
 
 import java.util.List;
@@ -25,4 +26,7 @@ public interface TrailService {
     void deleteAll();
 
     List<AverageRating> getAllAverages();
+
+    WeatherData getCurrentWeatherForcast(long trailid);
+
 }
