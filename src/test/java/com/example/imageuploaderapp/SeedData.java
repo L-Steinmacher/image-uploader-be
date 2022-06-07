@@ -1,10 +1,9 @@
 package com.example.imageuploaderapp;
 
-import com.example.imageuploaderapp.models.Role;
-import com.example.imageuploaderapp.models.User;
-import com.example.imageuploaderapp.models.UserEmail;
-import com.example.imageuploaderapp.models.UserRoles;
+import com.example.imageuploaderapp.models.*;
+import com.example.imageuploaderapp.services.HikeService;
 import com.example.imageuploaderapp.services.RoleService;
+import com.example.imageuploaderapp.services.TrailService;
 import com.example.imageuploaderapp.services.UserService;
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.FakeValuesService;
@@ -17,6 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
 
+
+/**
+ * ToDo rewrite seed data ,
+ * ToDO get current tests to run with new data
+ *
+ */
+
 /**
  * SeedData puts both known and random data into the database. It implements CommandLineRunner.
  * <p>
@@ -28,23 +34,24 @@ import java.util.Locale;
     prefix = "command.line.runner",
     value = "enabled",
     havingValue = "true",
-    matchIfMissing = true
-)
+    matchIfMissing = true)
 @Component
 public class SeedData
     implements CommandLineRunner
 {
-    /**
-     * Connects the Role Service to this process
-     */
+
     @Autowired
     RoleService roleService;
 
-    /**
-     * Connects the user service to this process
-     */
+
     @Autowired
     UserService userService;
+
+    @Autowired
+    HikeService hikeService;
+
+    @Autowired
+    TrailService trailService;
 
     /**
      * Generates test, seed data for our application
@@ -64,49 +71,110 @@ public class SeedData
         userService.deleteAll();
         roleService.deleteAll();
 
-        userService.deleteAll();
-        roleService.deleteAll();
-        Role r1 = new Role("Testadmin");
-        Role r2 = new Role("Testdata");
-        Role r3 = new Role("Testuser");
+        Role r1 = new Role("admin");
+        Role r2 = new Role("user");
+        Role r3 = new Role("data");
 
         r1 = roleService.save(r1);
         r2 = roleService.save(r2);
         r3 = roleService.save(r3);
 
-        // Admin Test User
-        User u1 = new User("Admin Test", "passwordTest", "admin@test.com");
-        u1.setId(10);
-        u1.getRoles().add(new UserRoles(u1, r1));
-        u1.getRoles().add(new UserRoles(u1,r2));
-        u1.getRoles().add(new UserRoles(u1,r3));
+        // admin, data, user
+        User u1 = new User("admin",
+                "password",
+                "admin@fake.com");
+        u1.getRoles()
+                .add(new UserRoles(u1,
+                        r1));
+        u1.getRoles()
+                .add(new UserRoles(u1,
+                        r2));
+        u1.getRoles()
+                .add(new UserRoles(u1,
+                        r3));
 
-        u1.getUseremails().add(new UserEmail( "admin@test.com", u1));
-        u1.getUseremails().get(0).setUseremailid(11);
+        // data, user
+        User u2 = new User("Indy",
+                "Dog",
+                "indy_dog@fake.com");
+        u2.getRoles()
+                .add(new UserRoles(u2,
+                        r2));
+        u2.getRoles()
+                .add(new UserRoles(u2,
+                        r3));
 
-        u1.getUseremails().add(new UserEmail("test@admin.com", u1));
-        u1.getUseremails().get(1).setUseremailid(12);
+        // data, user
+        User u3 = new User("Sassy",
+                "iLoveIndy",
+                "dogzilla@fake.com");
 
-        userService.save(u1);
+        u3.getRoles()
+                .add(new UserRoles(u3,
+                        r3));
 
-        User u2 = new User("Data Test", "dataPasswordTest", "data@test.com");
-        u2.setId(20);
-        u2.getRoles().add(new UserRoles(u2, r2));
-        u2.getRoles().add(new UserRoles(u2, r3));
+        User u4 = new User("George",
+                "ftCat",
+                "blahcat@fake.com");
+        u4.getRoles()
+                .add(new UserRoles(u4,
+                        r2));
 
-        u2.getUseremails().add(new UserEmail("data@test.com", u2));
-        u2.getUseremails().get(0).setUseremailid(21);
 
-        userService.save(u2);
+        Trail t1 = new Trail("Rattlesnake Ledge",
+                "Head out on this 5.3-mile out-and-back trail near North Bend, Washington. Generally considered a moderately challenging route, it takes an average of 2 h 46 min to complete. This is a very popular area for hiking, so you'll likely encounter other people while exploring. The trail is open year-round and is beautiful to visit anytime. Dogs are welcome, but must be on a leash.",
+                47.434889,
+                121.4643);
 
-        User u3 = new User("User Test", "UserPasswordTest", "user@test.com");
-        u3.setId(30);
-        u3.getRoles().add(new UserRoles(u3, r3));
+        Trail t2 = new Trail("Ravenna Park Trail",
+                "go to ravenna",
+                47.6687,
+                122.3037);
 
-        u3.getUseremails().add(new UserEmail("user@test.com", u3));
-        u3.getUseremails().get(0).setUseremailid(31);
+        u1 = userService.save(u1);
+        u2 = userService.save(u2);
+        u3 = userService.save(u3);
+        u4 = userService.save(u4);
 
-        userService.save(u3);
+        t1 = trailService.save(t1);
+        t2 = trailService.save(t2);
+
+        Hike h1 = new Hike(
+                "it was fun!",
+                3.0d,
+                u2,
+                t1);
+
+        Hike h2 = new Hike(
+                "sunny and fun!",
+                4.0d,
+                u1,
+                t1);
+
+        Hike h3 = new Hike(
+                "booo!",
+                1.0d,
+                u3,
+                t1);
+
+        Hike h4 = new Hike(
+                "yay!",
+                5.0d,
+                u4,
+                t1);
+
+        Hike h5 = new Hike(
+                "more fun!",
+                3.0d,
+                u3,
+                t2);
+
+        h1 = hikeService.save(h1);
+        h2 = hikeService.save(h2);
+        h3 = hikeService.save(h3);
+        h4 = hikeService.save(h4);
+        h5 = hikeService.save(h5);
+
 
         if (false)
         {

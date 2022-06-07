@@ -3,6 +3,7 @@ package com.example.imageuploaderapp.controllers;
 import com.example.imageuploaderapp.models.Hike;
 import com.example.imageuploaderapp.models.MinHike;
 import com.example.imageuploaderapp.models.Trail;
+import com.example.imageuploaderapp.schemes.WeatherData;
 import com.example.imageuploaderapp.services.HikeService;
 import com.example.imageuploaderapp.services.TrailService;
 import com.example.imageuploaderapp.services.UserService;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -208,7 +210,7 @@ public class TrailController {
 
     /**
      * www.example.com/trails/trails/ratings
-     * ToDo debug this
+     *
      */
     @ApiOperation("Gets all Trail id's as well as the average rating for the trail.")
     @GetMapping(value = "/trails/ratings",
@@ -217,5 +219,20 @@ public class TrailController {
     {
         List<AverageRating> list = trailService.getAllAverages();
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    /**
+     * ToDo connect to the weather API and test endpoint
+     * www.example.com/trails/trail/9/weather
+     */
+    @GetMapping(value = "trail/{trailid}/weather",
+        produces = "application/json")
+    public ResponseEntity<?> getTrailWeather(
+            @PathVariable
+            long trailid)
+    {
+        WeatherData currWeather = trailService.getCurrentWeatherForcast(trailid);
+
+        return new ResponseEntity<>(currWeather, HttpStatus.OK);
     }
 }
