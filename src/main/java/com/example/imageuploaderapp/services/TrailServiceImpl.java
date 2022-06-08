@@ -4,10 +4,12 @@ import com.amazonaws.services.lambda.model.transform.AccountUsageJsonUnmarshalle
 import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.models.Hike;
 import com.example.imageuploaderapp.models.Trail;
+import com.example.imageuploaderapp.models.User;
 import com.example.imageuploaderapp.repository.TrailRepository;
 import com.example.imageuploaderapp.schemes.WeatherData;
 import com.example.imageuploaderapp.views.AverageRating;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -21,6 +23,12 @@ import java.util.List;
 public class TrailServiceImpl implements TrailService {
     @Autowired
     TrailRepository trailRepository;
+
+    @Autowired
+    HelperFunctions helperFunctions;
+
+    @Autowired
+    UserService userService;
 
     @Override
     public List<Trail> findAll() {
@@ -93,35 +101,38 @@ public class TrailServiceImpl implements TrailService {
     }
 
     /**
-     * TODO add check for HelperFunction.isAuthorizedToMakeChange() arround if statements.
      *
      * Updates the trail object by trail id. May update one or more fields.
      * @param trail partial trail object to update with
-     * @param id id of the trail
+     * @param trailid id of the trail
+     * @param userid id of the user making the change
      * @return
      */
     @Transactional
     @Override
-    public Trail update(Trail trail, long id)
+    public Trail update(Trail trail, long trailid, long userid)
     {
-        Trail currTrail = trailRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Trail with id " + id + " not found!"));
+        Trail currTrail = findTrailById(trailid);
+        User currUser = userService.findUserById(userid);
 
-        if (trail.getTrailname() != null) {
-            currTrail.setTrailname(trail.getTrailname());
+        if (helperFunctions.isAuthorizedToMakeChange(currUser.getUsername())){
+            if (trail.getTrailname() != null) {
+                currTrail.setTrailname(trail.getTrailname());
+            }
+
+            if (trail.getTraildiscription() != null){
+                currTrail.setTraildiscription(trail.getTraildiscription());
+            }
+
+            if (trail.getLatitude() != 0.0) {
+                currTrail.setLatitude(trail.getLatitude());
+            }
+
+            if (trail.getLongitude() != 0.0) {
+                currTrail.setLongitude(trail.getLongitude());
+            }
         }
 
-        if (trail.getTraildiscription() != null){
-            currTrail.setTraildiscription(trail.getTraildiscription());
-        }
-
-        if (trail.getLatitude() != 0.0) {
-            currTrail.setLatitude(trail.getLatitude());
-        }
-
-        if (trail.getLongitude() != 0.0) {
-            currTrail.setLongitude(trail.getLongitude());
-        }
 
         return trailRepository.save(currTrail);
     }
@@ -145,7 +156,6 @@ public class TrailServiceImpl implements TrailService {
 
         String WEATHER_API_KEY = System.getenv("WEATHERAPIKEY");
 
-        System.out.println(WEATHER_API_KEY.length());
         final String url = "http://api.openweathermap.org";
 
         WebClient client = WebClient.builder()

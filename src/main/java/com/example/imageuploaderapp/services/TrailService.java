@@ -21,7 +21,8 @@ public interface TrailService {
 
     Trail update(
             Trail trail,
-            long id);
+            long trailid,
+            long userid);
 
     void deleteAll();
 

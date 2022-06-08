@@ -104,7 +104,7 @@ public class TrailController {
     }
 
     /**
-     *
+     * www.example.com/trails/trail/9?userid=4
      * @param updateTrial
      * @param trailid
      * @return
@@ -115,9 +115,10 @@ public class TrailController {
         produces = "application/json")
     public ResponseEntity<?> updateTrail(
             @RequestBody Trail updateTrial,
-            @PathVariable long trailid)
+            @PathVariable long trailid,
+            @RequestParam long userid)
     {
-        Trail updatedTrial = trailService.update(updateTrial, trailid);
+        Trail updatedTrial = trailService.update(updateTrial, trailid, userid);
         return new ResponseEntity<>(updatedTrial, HttpStatus.OK);
     }
 
@@ -136,7 +137,7 @@ public class TrailController {
     }
 
     /**
-     *
+     *  ToDo add handling an image.  RequestBody will have to handle a multipart file.
      * @param minHike
      * @param trailId
      * @param id
@@ -222,7 +223,6 @@ public class TrailController {
     }
 
     /**
-     * ToDo connect to the weather API and test endpoint
      * www.example.com/trails/trail/9/weather
      */
     @GetMapping(value = "trail/{trailid}/weather",
