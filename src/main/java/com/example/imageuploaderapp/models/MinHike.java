@@ -6,6 +6,7 @@ public class MinHike {
 
     private long rating;
 
+
     public MinHike(String comment, long rating) {
         this.comment = comment;
         this.rating = rating;

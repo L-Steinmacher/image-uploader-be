@@ -69,12 +69,12 @@ public class User extends Auditable
     /**
      * Part of the join relationship between user and ImageModel
      */
-    @OneToMany(mappedBy = "user",
-        cascade =  CascadeType.ALL,
-        orphanRemoval = true)
-    @JsonIgnoreProperties(value = "user",
-        allowSetters = true)
-    private Set<Image> imagetables = new HashSet<>();
+//    @OneToMany(mappedBy = "user",
+//        cascade =  CascadeType.ALL,
+//        orphanRemoval = true)
+//    @JsonIgnoreProperties(value = "user",
+//        allowSetters = true)
+//    private Set<Image> imagetables = new HashSet<>();
 
     @OneToMany(mappedBy = "user",
     cascade = CascadeType.ALL,
@@ -182,15 +182,15 @@ public class User extends Auditable
         this.primaryemail = primaryemail;
     }
 
-    public Set<Image> getImagetables()
-    {
-        return imagetables;
-    }
-
-    public void setImagetables(Set<Image> images)
-    {
-        this.imagetables = images;
-    }
+//    public Set<Image> getImagetables()
+//    {
+//        return imagetables;
+//    }
+//
+//    public void setImagetables(Set<Image> images)
+//    {
+//        this.imagetables = images;
+//    }
 
     public List<Hike> getHikes() {
         return hikes;

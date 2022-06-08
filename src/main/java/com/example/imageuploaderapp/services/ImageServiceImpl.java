@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.example.imageuploaderapp.bucket.BucketName;
 import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.filestore.FileStore;
+import com.example.imageuploaderapp.models.Hike;
 import com.example.imageuploaderapp.models.Image;
 import com.example.imageuploaderapp.models.User;
 import com.example.imageuploaderapp.repository.ImageRepository;
@@ -29,6 +30,9 @@ public class ImageServiceImpl implements ImageService
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    HikeService hikeService;
 
     @Autowired
     private UserRepository userRepository;
@@ -106,7 +110,7 @@ public class ImageServiceImpl implements ImageService
         isImage(file);
 
         // The user exists in database
-        User user = userService.findUserById(id);
+        Hike currHike = hikeService.findHikeById(id);
 
         // Grabs metadata from file if any
         Map<String, String> metadata = extractMetadata(file);
@@ -116,14 +120,14 @@ public class ImageServiceImpl implements ImageService
         String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
 
         newImage.setName(filename);
-        newImage.setUser(user);
+        newImage.setHike(currHike);
         newImage.setLink(path);
 
         try
         {
             fileStore.save(path,filename,Optional.of(metadata),file.getInputStream());
-            user.getImagetables().add(newImage);
-            userService.save(user);
+            currHike.getImages().add(newImage);
+            hikeService.save(currHike);
         }catch (IOException e)
         {
             throw  new IllegalStateException(e);
