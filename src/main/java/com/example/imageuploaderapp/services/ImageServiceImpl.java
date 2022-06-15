@@ -116,7 +116,7 @@ public class ImageServiceImpl implements ImageService
         Map<String, String> metadata = extractMetadata(file);
 
         String path = String.format("%s/%s",
-            BucketName.PROFILE_IMAGE.getBucketName(), userService.findUserById(id));
+            BucketName.PROFILE_IMAGE.getBucketName(), userService.findUserById(currHike.getUser().getId()));
         String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
 
         newImage.setName(filename);
@@ -127,11 +127,14 @@ public class ImageServiceImpl implements ImageService
         {
             fileStore.save(path,filename,Optional.of(metadata),file.getInputStream());
             currHike.getImages().add(newImage);
-            hikeService.save(currHike);
+//            hikeService.save(currHike);
         }catch (IOException e)
         {
             throw  new IllegalStateException(e);
         }
+        System.out.println("*************************************************************************** \n \n");
+        System.out.println("success");
+        System.out.println("*************************************************************************** \n \n");
         return newImage;
     }
 
