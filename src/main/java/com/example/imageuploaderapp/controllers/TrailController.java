@@ -1,5 +1,6 @@
 package com.example.imageuploaderapp.controllers;
 
+import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.models.Hike;
 import com.example.imageuploaderapp.models.MinHike;
 import com.example.imageuploaderapp.models.Trail;
@@ -16,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -143,35 +143,29 @@ public class TrailController {
     }
 
     /**
-     *  ToDo add handling an image.  RequestBody will have to handle a multipart file.
-     * @param minHike
-     * @param trailId
-     * @param id
+     *
      * @return
      */
     @ApiOperation("Saves new hike to the database.")
-    @PostMapping(value = "/trail/{trailId}/",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/trail/hike",
+                consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE },
+                produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createNewHike(
-            @RequestPart MinHike minHike,
-            @PathVariable long trailId,
-            @RequestPart(value = "file", required = false) MultipartFile file,
-            @RequestParam long id)
+            @RequestPart(name = "hike") MinHike hike,
+            @RequestPart(name = "file", required = false) MultipartFile file)
     {
-
-        Hike newHike = new Hike();
-        newHike.setComments(minHike.getComment());
-        newHike.setRating(minHike.getRating());
-        newHike.setUser(userService.findUserById(id));
-        newHike.setTrail(trailService.findTrailById(trailId));
-
+        System.out.println(hike.getUserid());
+        Hike newHike = new Hike(hike.getComments(),
+                hike.getRating(),
+                userService.findUserById(hike.getUserid()),
+                trailService.findTrailById(hike.getTrailid()));
         newHike = hikeService.save(newHike);
-
-        if (file != null) {
+        if (file != null)
+        {
             imageService.uploadImage(newHike.getHikeid(), file);
         }
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(newHike,HttpStatus.CREATED);
     }
 
     /**
