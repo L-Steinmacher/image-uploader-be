@@ -1,10 +1,12 @@
 package com.example.imageuploaderapp.controllers;
 
+import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.models.Hike;
 import com.example.imageuploaderapp.models.MinHike;
 import com.example.imageuploaderapp.models.Trail;
 import com.example.imageuploaderapp.schemes.WeatherData;
 import com.example.imageuploaderapp.services.HikeService;
+import com.example.imageuploaderapp.services.ImageService;
 import com.example.imageuploaderapp.services.TrailService;
 import com.example.imageuploaderapp.services.UserService;
 import com.example.imageuploaderapp.views.AverageRating;
@@ -12,9 +14,10 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -31,6 +34,9 @@ public class TrailController {
 
     @Autowired
     private HikeService hikeService;
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private UserService userService;
@@ -104,7 +110,7 @@ public class TrailController {
     }
 
     /**
-     *
+     * www.example.com/trails/trail/9?userid=4
      * @param updateTrial
      * @param trailid
      * @return
@@ -115,9 +121,10 @@ public class TrailController {
         produces = "application/json")
     public ResponseEntity<?> updateTrail(
             @RequestBody Trail updateTrial,
-            @PathVariable long trailid)
+            @PathVariable long trailid,
+            @RequestParam long userid)
     {
-        Trail updatedTrial = trailService.update(updateTrial, trailid);
+        Trail updatedTrial = trailService.update(updateTrial, trailid, userid);
         return new ResponseEntity<>(updatedTrial, HttpStatus.OK);
     }
 
@@ -137,28 +144,28 @@ public class TrailController {
 
     /**
      *
-     * @param minHike
-     * @param trailId
-     * @param id
      * @return
      */
     @ApiOperation("Saves new hike to the database.")
-    @PostMapping(value = "/trail/{trailId}/",
-            consumes = "application/json")
+    @PutMapping(value = "/trail/hike",
+                consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE },
+                produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createNewHike(
-            @RequestBody MinHike minHike,
-            @PathVariable long trailId,
-            @RequestParam long id)
+            @RequestPart(name = "hike") MinHike hike,
+            @RequestPart(name = "file", required = false) MultipartFile file)
     {
-        Hike newHike = new Hike();
-        newHike.setComments(minHike.getComment());
-        newHike.setRating(minHike.getRating());
-        newHike.setUser(userService.findUserById(id));
-        newHike.setTrail(trailService.findTrailById(trailId));
+        System.out.println(hike.getUserid());
+        Hike newHike = new Hike(hike.getComments(),
+                hike.getRating(),
+                userService.findUserById(hike.getUserid()),
+                trailService.findTrailById(hike.getTrailid()));
+        newHike = hikeService.save(newHike);
+        if (file != null)
+        {
+            imageService.uploadImage(newHike.getHikeid(), file);
+        }
 
-        hikeService.save(newHike);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(newHike,HttpStatus.CREATED);
     }
 
     /**
@@ -222,7 +229,6 @@ public class TrailController {
     }
 
     /**
-     * ToDo connect to the weather API and test endpoint
      * www.example.com/trails/trail/9/weather
      */
     @GetMapping(value = "trail/{trailid}/weather",

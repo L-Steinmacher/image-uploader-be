@@ -2,6 +2,7 @@ package com.example.imageuploaderapp.services;
 
 import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.models.Hike;
+import com.example.imageuploaderapp.models.MinHike;
 import com.example.imageuploaderapp.repository.HikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

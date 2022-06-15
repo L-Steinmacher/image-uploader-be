@@ -229,6 +229,12 @@ public class UserController
             HttpStatus.OK);
     }
 
+    /**
+     * ToDo Refactor this so the Trail/hike service handles the endpoint.
+     * @param id
+     * @param file
+     * @return
+     */
     @PostMapping(value = "/user/{id}/image/upload",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)

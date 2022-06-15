@@ -18,13 +18,15 @@ public class Image
     @Column(name = "path", nullable = false)
     private String link;
 
-
-    @ManyToOne()
-    @JoinColumn(name = "userid",
-        nullable = false)
-    @JsonIgnoreProperties(value = "images",
-        allowSetters = true)
-    private User user;
+//    /**
+//     * TODO is this still necessary with hike object associated with the image?
+//      */
+//    @ManyToOne()
+//    @JoinColumn(name = "userid",
+//        nullable = false)
+//    @JsonIgnoreProperties(value = "images",
+//        allowSetters = true)
+//    private User user;
 
     @ManyToOne()
     @JoinColumn(name = "hikeid", nullable = false)
@@ -37,12 +39,12 @@ public class Image
     public Image(
         String name,
         String link,
-        User user,
+//        User user,
         Hike hike)
     {
         this.name = name;
         this.link = link;
-        this.user = user;
+//        this.user = user;
         this.hike = hike;
     }
 
@@ -76,15 +78,15 @@ public class Image
         this.link = path;
     }
 
-    public User getUser()
-    {
-        return user;
-    }
-
-    public void setUser(User user)
-    {
-        this.user = user;
-    }
+//    public User getUser()
+//    {
+//        return user;
+//    }
+//
+//    public void setUser(User user)
+//    {
+//        this.user = user;
+//    }
 
     public Hike getHike() { return hike; }
 
