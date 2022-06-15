@@ -3,6 +3,7 @@ package com.example.imageuploaderapp.services;
 import com.example.imageuploaderapp.ImageUploaderAppApplicationTesting;
 import com.example.imageuploaderapp.exceptions.ResourceNotFoundException;
 import com.example.imageuploaderapp.models.Trail;
+import com.example.imageuploaderapp.models.User;
 import com.example.imageuploaderapp.repository.TrailRepository;
 import com.example.imageuploaderapp.views.AverageRating;
 import org.junit.After;
@@ -11,6 +12,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -34,6 +36,9 @@ public class TrailServiceImplUnitTestWithDB {
 
     @Autowired
     TrailRepository trailRepository;
+
+    @MockBean
+    private HelperFunctions helperFunctions;
 
     String name = "Ravenna Park Trail";
 
@@ -131,11 +136,18 @@ public class TrailServiceImplUnitTestWithDB {
      */
     @Test
     public void g_updateTrail() {
+        String username = "admin";
+        long userid = 4;
+
         Trail currTrail = trailService.findTrailById(9);
 
         assertEquals(name.toLowerCase(), currTrail.getTrailname());
 
-        currTrail = trailService.update(newTrail, 9);
+        Mockito.when(helperFunctions.isAuthorizedToMakeChange(username))
+                .thenReturn(true);
+
+        currTrail = trailService.update(newTrail, 9, userid);
+
         assertEquals(newTrail.getTrailname(), currTrail.getTrailname());
     }
 
