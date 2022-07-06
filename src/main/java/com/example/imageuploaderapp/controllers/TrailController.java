@@ -26,6 +26,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
+@ApiOperation("Trail API")
 @RequestMapping("/trails")
 public class TrailController {
 
