@@ -1,6 +1,7 @@
 package com.example.imageuploaderapp;
 
 import com.example.imageuploaderapp.models.*;
+import com.example.imageuploaderapp.repository.ImageRepository;
 import com.example.imageuploaderapp.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +21,9 @@ public class SeedData implements CommandLineRunner
 {
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Autowired
     private UserService userService;
@@ -134,12 +138,24 @@ public class SeedData implements CommandLineRunner
                 3.0d,
                 u3,
                 t2);
-
+        Hike h6 = new Hike(
+                "Took a photo!",
+                5.0d,
+                u1,
+                t2);
         h1 = hikeService.save(h1);
         h2 = hikeService.save(h2);
         h3 = hikeService.save(h3);
         h4 = hikeService.save(h4);
         h5 = hikeService.save(h5);
+        h6 = hikeService.save(h6);
 
+        Image i1 = new Image(
+                "lucas-image-uploader-123/com.example.imageuploaderapp.models.User@f2c939a",
+                "whidbey.jpg-d878752c-980e-409e-9f13-9e0af4cb1277",
+                h6
+        );
+
+        i1 = imageRepository.save(i1);
     }
 }

@@ -8,6 +8,7 @@ import com.example.imageuploaderapp.filestore.FileStore;
 import com.example.imageuploaderapp.models.Hike;
 import com.example.imageuploaderapp.models.Image;
 import com.example.imageuploaderapp.models.User;
+import com.example.imageuploaderapp.repository.HikeRepository;
 import com.example.imageuploaderapp.repository.ImageRepository;
 import com.example.imageuploaderapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,10 @@ public class ImageServiceImpl implements ImageService
     private UserService userService;
 
     @Autowired
-    HikeService hikeService;
+    private HikeService hikeService;
+
+    @Autowired
+    private HikeRepository hikeRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -126,15 +130,14 @@ public class ImageServiceImpl implements ImageService
         try
         {
             fileStore.save(path,filename,Optional.of(metadata),file.getInputStream());
+            newImage = imageRepository.save(newImage);
             currHike.getImages().add(newImage);
-//            hikeService.save(currHike);
+            hikeService.save(currHike);
         }catch (IOException e)
         {
             throw  new IllegalStateException(e);
         }
-        System.out.println("*************************************************************************** \n \n");
-        System.out.println("success");
-        System.out.println("*************************************************************************** \n \n");
+        System.out.println("Image saved successfully." + newImage.getId());
         return newImage;
     }
 
@@ -179,14 +182,14 @@ public class ImageServiceImpl implements ImageService
 
     @Transactional
     @Override
-    public byte[] downloadImage(Long userid, Long imageid)
+    public byte[] downloadImage(Long hikeid, Long imageid)
     {
-        User user = userRepository.findById(userid)
-            .orElseThrow(() -> new ResourceNotFoundException("User id " + userid + " not found!"));
+        Hike currHike = hikeRepository.findById(hikeid)
+                .orElseThrow(() -> new ResourceNotFoundException("hike id " + hikeid + " not found!"));
         Image image = findImageById(imageid);
         String path = String.format("%s/%s",
             BucketName.PROFILE_IMAGE.getBucketName(),
-            user.getId());
+            currHike.getHikeid());
         String key = image.getLink();
         return fileStore.download(path,key);
     }
