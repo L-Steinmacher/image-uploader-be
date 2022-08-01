@@ -49,7 +49,7 @@ public class Swagger2Config
             .description("Image Uploader")
             .contact(new Contact("Lucas Steinmacher",
                 "http://www.lambdaschool.com",
-                "lucaslsteinmacher@gmial.com"))
+                "lucaslsteinmacher@gmail.com"))
             .license("MIT")
             .licenseUrl("https://github.com/LambdaSchool/java-usermodel/blob/master/LICENSE")
             .version("1.0.0")

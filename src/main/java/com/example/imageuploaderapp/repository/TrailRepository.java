@@ -14,7 +14,7 @@ public interface TrailRepository extends CrudRepository<Trail, Long>
 
     List<Trail> findByTrailnameContainingIgnoreCase(String trailname);
 
-    @Query(value = "SELECT t.trailid as trailid, avg(h.rating) as average " +
+    @Query(value = "SELECT t.trailid as trailid, t.trailname as trailname, avg(h.rating) as average " +
             "FROM trails t LEFT JOIN hikes h " +
             "ON t.trailid = h.trailid " +
             "GROUP BY t.trailid",

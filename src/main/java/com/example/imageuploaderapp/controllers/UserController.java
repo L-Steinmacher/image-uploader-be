@@ -230,14 +230,14 @@ public class UserController
     }
 
     /**
-     * ToDo Refactor this so the Trail/hike service handles the endpoint.
+     *
      * @param id
      * @param file
      * @return
      */
     @PostMapping(value = "/user/{id}/image/upload",
-        consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+                consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> uploadImage(
         @PathVariable("id") long id,
         @RequestParam("file") MultipartFile file)
