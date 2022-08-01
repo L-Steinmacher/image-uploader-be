@@ -5,4 +5,6 @@ public interface AverageRating {
 
     double getAverage();
 
+    String getTrailname();
+
 }
